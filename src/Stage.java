@@ -9,8 +9,9 @@ public class Stage {
 	private int stageStartTime;
 	private int stageStopTime;
 	
-	public Stage(int startTime, int stopTime, int timeSlotLength)
+	public Stage(int startTime, int stopTime, int timeSlotLength, String location)
 	{
+		this.location = location;
 		stageStartTime = startTime;
 		stageStopTime = stopTime;
 		this.timeSlotLength = timeSlotLength;
