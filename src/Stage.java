@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Stage {
-	private ArrayList<Artist> artist = new ArrayList<Artist>;
-	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>;
+	private ArrayList<Artist> artist = new ArrayList<Artist>();
+	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private int timeSlotLength;
 	private String location;
 	private String stageName;
@@ -21,7 +21,7 @@ public class Stage {
 		while( timeSlotStart + timeSlotLength < stageStopTime)
 		{
 			timeSlotStop = timeSlotStart + timeSlotLength;
-			TimeSlot timeSlot = new TimeSlot(timeSlotStart, timeSlotStop, false)
+			TimeSlot timeSlot = new TimeSlot(timeSlotStart, timeSlotStop, false);
 			timeSlots.add(timeSlot);
 			timeSlotStart = timeSlotStop;
 		}
