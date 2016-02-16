@@ -1,5 +1,3 @@
-/Stage.class
-/TimeSlot.class
-/.gitignore
-/Artist.class
-/Schedule.class
+# unnecessary java files
+*.jar
+*.class
