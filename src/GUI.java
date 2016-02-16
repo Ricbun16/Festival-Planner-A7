@@ -4,8 +4,6 @@ import java.util.*;
 import java.awt.event.*;
 import javax.swing.border.*;
 
-
-
 public class GUI extends JFrame{
 	
 	public static void main(String s[]){
@@ -22,7 +20,6 @@ public class GUI extends JFrame{
 	private void makeFrame(){
 		
 		JPanel content = new JPanel(new BorderLayout());
-        content.setBorder(new EmptyBorder( 10, 10, 10, 10));
         Border blackline = BorderFactory.createLineBorder(Color.black);
         
         JPanel westBorder = new JPanel();
@@ -55,7 +52,7 @@ public class GUI extends JFrame{
         JButton addStage = new JButton("Add stage");
         addStage.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
-        		
+        		new StagePopUp();
           	}
         });
         eastBorder.add(addStage);    
