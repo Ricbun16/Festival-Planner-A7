@@ -20,7 +20,7 @@ public class Artist {
 		artistName = name;
 	}
 	
-	public ArrayList getGenre()
+	public ArrayList<String> getGenre()
 	{
 		return genres;
 	}

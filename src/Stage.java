@@ -14,7 +14,7 @@ public class Stage {
 		this.location = location;
 		stageStartTime = startTime;
 		stageStopTime = stopTime;
-		this.timeSlotLength = timeSlotLength;
+		this.setTimeSlotLength(timeSlotLength);
 		int timeSlotStart = stageStartTime;
 		int timeSlotStop;
 		
@@ -55,6 +55,22 @@ public class Stage {
 	public String getStageName()
 	{
 		return stageName;
+	}
+
+	public ArrayList<Artist> getArtist() {
+		return artist;
+	}
+
+	public void setArtist(ArrayList<Artist> artist) {
+		this.artist = artist;
+	}
+
+	public int getTimeSlotLength() {
+		return timeSlotLength;
+	}
+
+	public void setTimeSlotLength(int timeSlotLength) {
+		this.timeSlotLength = timeSlotLength;
 	}
 
 }
