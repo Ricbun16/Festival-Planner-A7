@@ -15,7 +15,7 @@ public class Artist {
 	public void setName(String name){	artistName = name;	}
 	
 	
-	public ArrayList getGenre(){return genres;	}
+	public ArrayList<String> getGenre(){return genres;	}
 	
 	//adds a genre to the arraylist. Input string
 	public void addGenre(String genre)	{		genres.add(genre);	}
