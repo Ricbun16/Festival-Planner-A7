@@ -6,7 +6,7 @@ public class TimeSlot {
 	int timeSlotEnd = 0100;
 	int popularity = 0;
 	boolean isOccupied = false;
-	ArrayList<Artist> artists = new ArrayList<artist>();
+	ArrayList<Artist> artists = new ArrayList<Artist>();
 	
 	public TimeSlot(int timeSlotStart, int timeSlotEnd, boolean isOccupied) {
 		this.timeSlotStart = timeSlotStart;
@@ -15,12 +15,12 @@ public class TimeSlot {
 	}
 	
 	// add an artist to arraylist with artists
-	public void scheduleArtistOnSlot(Artist artist) {
+	public void setArtist(Artist artist) {
 		artists.add(artist);
 	}
 	
 	// replace arraylist artists with new arraylist
-	public void sceduleArtistsOnSlot(ArrayLsit<Artist> artists) {
+	public void sceduleArtistsOnSlot(ArrayList<Artist> artists) {
 		this.artists = artists;
 	}
 	
@@ -50,7 +50,7 @@ public class TimeSlot {
 	}
 	
 	// set the boolean isOccupied
-	public void setIsOccupied(boolean isOccupied) {
+	public void setOccupied(boolean isOccupied) {
 		this.isOccupied = isOccupied;
 	}
 
