@@ -22,6 +22,11 @@ public class StagePopUp extends JFrame {
 		content.add(name);
 		
 		JButton addStage = new JButton("Add stage");
+        addStage.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { 
+        		//new Stage();
+          	}
+        });
 		content.add(addStage);
 		
 		nameLabel.setBounds(10,10,100,20);
@@ -31,6 +36,5 @@ public class StagePopUp extends JFrame {
 		setContentPane(content);
 		setVisible(true);
 		
-	}
-	
+	}	
 }
