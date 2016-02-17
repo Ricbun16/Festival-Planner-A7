@@ -6,14 +6,15 @@ public class TimeSlot {
 	int timeSlotEnd = 0100;
 	int popularity = 0;
 	boolean isOccupied = false;
-	ArrayList<Artist> artists = new ArrayList<Artist>();
+	//ArrayList<Artist> artists = new ArrayList<Artist>();
+	Artist artist = new Artist("Geen artiest", new ArrayList<String>());
 	
 	public TimeSlot(int timeSlotStart, int timeSlotEnd, boolean isOccupied) {
 		this.timeSlotStart = timeSlotStart;
 		this.timeSlotEnd = timeSlotEnd;
 		this.isOccupied = isOccupied;
 	}
-	
+/*	
 	// add an artist to arraylist with artists
 	public void setArtist(Artist artist) {
 		artists.add(artist);
@@ -28,7 +29,16 @@ public class TimeSlot {
 	public ArrayList<Artist> getScheduledArtists() {
 		return artists;
 	}
+*/
+	// set the artist
+	public void setArtist(Artist artist) {
+		this.artist = artist;
+	}
 	
+	// return the artist
+	public Artist getArtist() {
+		return artist;
+	}
 	// return boolean isOccupied
 	public boolean checkIsOccupied() {
 		return isOccupied;

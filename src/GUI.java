@@ -137,14 +137,14 @@ public class GUI extends JFrame{
           
 	}
 	
-	//	public void fillTimeslots(Stage currentStage){
-	//	timeslots.clear();
-	//	ArrayList<timeslots> tempList = currentStage.getTimeSlots();
-	//	for(int i = 0;i<tempList.size();i++){
-	//		if(!tempList.get(i).getGebruik)
-	//			timeslots.add(tempList.get(i));
-	//	}
-	//}
+//		public void fillTimeslots(Stage currentStage){
+//		timeSlots.clear();
+//		ArrayList<TimeSlot> tempList = currentStage.getTimeSlots();
+//		for(int i = 0;i<tempList.size();i++){
+//			if(!tempList.get(i).getGebruik)
+//				timeSlot.add(tempList.get(i));
+//		}
+//	}
 	
 	public class TableModel extends AbstractTableModel{
 	
@@ -163,14 +163,14 @@ public class GUI extends JFrame{
 	
 		
 		public Object getValueAt(int row, int column) {
-//			TimeSlot T = timeSlots.get(row);
-//			switch(column){
-//			case 0: return  T.getArtist();
-//			case 1: return  T.getGenre();
-//			case 2: return  T.getStartTime();
-//			case 3: return  T.getStopTime();
-//			case 4: return  T.getPopularity();
-//			}
+			TimeSlot T = timeSlots.get(row + 1);
+			switch(column){
+			case 0: return  T.getArtist();
+			case 1: return  T.getArtist().getGenre();
+			case 2: return  T.getTimeSlotStart();
+			case 3: return  T.getTimeSlotEnd();
+			case 4: return  T.getPopularity();
+			}
 			return "";
 		}
 		
