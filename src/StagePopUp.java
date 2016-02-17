@@ -5,12 +5,16 @@ import java.awt.event.*;
 import javax.swing.border.*;
 
 public class StagePopUp extends JFrame {
+	
+	private Schedule schedule;
+	private GUI Gui;
 
-	public StagePopUp(){
+	public StagePopUp(Schedule schedule){
 		super("New stage");
 		setSize(350, 100);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		makeFrame();
+		this.schedule = schedule;
 	}
 	
 	private void makeFrame(){
@@ -18,13 +22,13 @@ public class StagePopUp extends JFrame {
 		JPanel content = new JPanel(null);
 		JLabel nameLabel = new JLabel("Stage Name: ");
 		content.add(nameLabel);
-		JTextField name = new JTextField(20);
+		final JTextField name = new JTextField(20);
 		content.add(name);
 		
 		JButton addStage = new JButton("Add stage");
         addStage.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
-        		//new Stage();
+        		schedule.addStage(name.getText(), 600, 1200, 60);
           	}
         });
 		content.add(addStage);

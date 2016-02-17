@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Schedule {
 
-	private ArrayList<Artist> artist;
+	private ArrayList<Artist> artists;
 	private ArrayList<Stage> stages;
 	private String artistName;
 	private int scheduleStartTime;
@@ -10,20 +10,27 @@ public class Schedule {
 	
 	public Schedule(int startTime, int stopTime)
 	{
+		stages = new ArrayList<Stage>();
+		artists = new ArrayList<Artist>();
 		setScheduleStartTime(startTime);
 		setScheduleStopTime(stopTime);
 	}
 	
-	public void setArtists(String artistName){
+	public void addStage(String stageName, int stageStartTime, int stageStopTime, int timeSlotLentgh){
+		Stage stage = new Stage(stageName, stageStartTime, stageStopTime, timeSlotLentgh);
+		stages.add(stage);
+	}
+	
+	public void setArtists(String artistName) {
 		this.setArtistName(artistName);
 	}
 
 	public ArrayList<Artist> getArtist() {
-		return artist;
+		return artists;
 	}
 
 	public void setArtist(ArrayList<Artist> artist) {
-		this.artist = artist;
+		this.artists = artist;
 	}
 
 	public ArrayList<Stage> getStages() {
