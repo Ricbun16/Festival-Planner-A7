@@ -22,6 +22,9 @@ public class GUI extends JFrame{
 	private Schedule schedule;
 	private JPanel westBorder;
 	private ArrayList<TimeSlot> timeSlots;
+	private short state = 0, buttonState = 0;
+	private String title;
+	private JLabel titleLabel;
 	
 	public static void main(String s[]){
 		new GUI();
@@ -49,7 +52,8 @@ public class GUI extends JFrame{
         artistAndGenre.setSize(100, 200);
         artistAndGenre.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
-        		
+        		state = 0;
+        		switchState();
           	}
         }); 
         
@@ -63,7 +67,6 @@ public class GUI extends JFrame{
         JButton addStage = new JButton("Add stage");
         addStage.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
-        		//new StagePopUp(schedule);
         		addStagePopUp();
           	}
         });
@@ -72,7 +75,7 @@ public class GUI extends JFrame{
         JButton addPerformance = new JButton("Add show");
         addPerformance.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
-        		
+
           	}
         });
         eastBorder.add(addPerformance);
@@ -89,13 +92,15 @@ public class GUI extends JFrame{
         southBorder.setBorder(blackline);
         southBorder.add(new JLabel(" "));
         content.add(southBorder, BorderLayout.SOUTH);
-        
+ 
         JPanel center = new JPanel(new BorderLayout());
         JPanel centerNorth = new JPanel(new FlowLayout());
-        centerNorth.add(new JLabel("Artist & Genres"));
+
+        switchState();
+        centerNorth.add(titleLabel);
         centerNorth.setBorder(blackline);
         center.add(centerNorth, BorderLayout.NORTH);
-        
+
         center.add(new JScrollPane(new JTable(new TableModel())), BorderLayout.CENTER);
         
         content.add(center, BorderLayout.CENTER);
@@ -124,17 +129,44 @@ public class GUI extends JFrame{
 	}
 	
 	public void makeButton(String name) {
-	 
-		System.out.println(name);
-          JButton button = new JButton(name);
-          button.addActionListener(new ActionListener() {
-                              public void actionPerformed(ActionEvent e) { 
-                                  
-                              }
-                         });
-          westBorder.add(button);
-          revalidate();
-          
+		  JButton button = new JButton(name);
+          buttonState++;
+		  button.addActionListener(new ButtonListener(buttonState));
+		  westBorder.add(button);
+		  revalidate();
+	}
+	
+	public void switchState(){
+        try{
+            ArrayList<Stage> stages = schedule.getStages();
+            switch(state){
+	        	case 0: titleLabel.setText("Artist & Genres");
+	        		break;
+	        	case 1:	titleLabel.setText(stages.get(0).getName());
+	        		break;
+	        	case 2:	titleLabel.setText(stages.get(1).getName());
+	    			break;
+	        	case 3:	titleLabel.setText(stages.get(2).getName());
+	    			break;
+            }
+        } catch(NullPointerException e) {
+        	titleLabel = new JLabel("Artist & Genres");
+        }
+	}
+	
+	private class ButtonListener implements ActionListener{
+		
+		private short buttonState;
+		
+		public ButtonListener(short buttonState){
+			this.buttonState = buttonState;
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			state = buttonState;
+			switchState();
+		}
+		
 	}
 	
 	//	public void fillTimeslots(Stage currentStage){
