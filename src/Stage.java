@@ -4,14 +4,12 @@ public class Stage {
 	private ArrayList<Artist> artist = new ArrayList<Artist>();
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private int timeSlotLength;
-	private String location;
-	private String stageName;
+	private String name;
 	private int stageStartTime;
 	private int stageStopTime;
 	
-	public Stage(int startTime, int stopTime, int timeSlotLength, String location)
+	public Stage(String name, int startTime, int stopTime, int timeSlotLength)
 	{
-		this.location = location;
 		stageStartTime = startTime;
 		stageStopTime = stopTime;
 		this.setTimeSlotLength(timeSlotLength);
@@ -35,26 +33,10 @@ public class Stage {
 		
 	}
 	
-	// Sets the location of the stage.
-	public void setLocation(String location)
-	{
-		this.location = location;
-	}
-	// Gets the location of the stage.
-	public String getLocation()
-	{
-		return location;
-	}
-	
-	// Sets the stage name.
-	public void setStageName(String stageName)
-	{
-		this.stageName = stageName;
-	}
 	// Gets the stage name.
-	public String getStageName()
+	public String getName()
 	{
-		return stageName;
+		return name;
 	}
 
 	public ArrayList<Artist> getArtist() {
@@ -71,6 +53,10 @@ public class Stage {
 
 	public void setTimeSlotLength(int timeSlotLength) {
 		this.timeSlotLength = timeSlotLength;
+	}
+	
+	public ArrayList<TimeSlot> getTimeSlots() {
+		return timeSlots;
 	}
 
 }
