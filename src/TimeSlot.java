@@ -5,9 +5,10 @@ public class TimeSlot {
 	int timeSlotStart = 0000;
 	int timeSlotEnd = 0100;
 	int popularity = 0;
+	String genre = "No genre available";
 	boolean isOccupied = false;
 	//ArrayList<Artist> artists = new ArrayList<Artist>();
-	Artist artist = new Artist("Geen artiest", new ArrayList<String>());
+	Artist artist = new Artist("No artist available", new ArrayList<String>());
 	
 	public TimeSlot(int timeSlotStart, int timeSlotEnd, boolean isOccupied) {
 		this.timeSlotStart = timeSlotStart;
@@ -59,6 +60,11 @@ public class TimeSlot {
 		return popularity;
 	}
 	
+	// return the genre
+	public String getGenre() {
+		return genre;
+	}
+	
 	// set the boolean isOccupied
 	public void setOccupied(boolean isOccupied) {
 		this.isOccupied = isOccupied;
@@ -67,5 +73,10 @@ public class TimeSlot {
 	// set the integer popularity
 	public void setPopularity(int popularity) {
 		this.popularity = popularity;
+	}
+	
+	// set the genre
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 }
