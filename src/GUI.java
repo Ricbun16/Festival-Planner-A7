@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 
@@ -130,24 +131,24 @@ public class GUI extends JFrame{
 		int hoursStart;
 		int hoursStop;
 		int minuteStart;
-		int minuteSop;
+		int minuteStop;
 		int timeSlotLength;
 		String stageName;
 		
-		Object[] message = {"BeginTijd",field1,":",field2
+		Object[] message = {"BeginTijd",field1,":",field2,
 		"eindtijd",field3,":",field4,
 		"Naam",field5,"TimeSlot Length :",field6
 		};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.OK_OPTION)
 		{
-			hoursStart = integer.parseInt(field1.getText());
-			minuteStart = integer.parseInt(field2.getText());
-			hoursStop = integer.parseInt(field3.getText());
-			minuteStop = integer.parseInt(field4.getText());
+			hoursStart = Integer.parseInt(field1.getText());
+			minuteStart = Integer.parseInt(field2.getText());
+			hoursStop = Integer.parseInt(field3.getText());
+			minuteStop = Integer.parseInt(field4.getText());
 			stageName = (String)field5.getText();
-			timeSlotLength = integer.parseInt(field6.getText());
-			schedule.addStage(stageName, hoursStart*60+minuteStart,hoursStop*60+minutesStop, timeSlotLength)
+			timeSlotLength = Integer.parseInt(field6.getText());
+			schedule.addStage(stageName, hoursStart*60+minuteStart,hoursStop*60+minuteStop, timeSlotLength);
 			makeButton(stageName);
 			
 		}
@@ -184,7 +185,7 @@ public class GUI extends JFrame{
 	private class ButtonListener implements ActionListener{
 		private short buttonState;
 		
-		public buttonListener(short buttonState){
+		public ButtonListener(short buttonState){
 			this.buttonState = buttonState;
 		}
 		
@@ -198,7 +199,7 @@ public class GUI extends JFrame{
 		ArrayList<TimeSlot> tempList = currentStage.getTimeSlots();
 		for(int i = 0;i<tempList.size();i++){
 			if(!tempList.get(i).checkIsOccupied())
-				timeSlot.add(tempList.get(i));
+				timeSlots.add(tempList.get(i));
 		}
 	}
 	
@@ -224,16 +225,16 @@ public class GUI extends JFrame{
 		public Object getValueAt(int row, int column) {
 			TimeSlot t = null;
 			if(timeSlots != null && timeSlots.size()>row)
-				t = timeSlots.get(row)
+				t = timeSlots.get(row);
 			else
 				return "";
 				
 			switch(column){
-			case 0: return  T.getScheduledArtists().get(0).getName();
-			case 1: return  T.getScheduledArtists().get(0).getGenreString();
-			case 2: return  T.getTimeSlotStart();
-			case 3: return  T.getTimeSlotEnd();
-			case 4: return  T.getPopularity();
+			case 0: return  t.getArtist();
+			case 1: return  t.getGenre();
+			case 2: return  t.getTimeSlotStart();
+			case 3: return  t.getTimeSlotEnd();
+			case 4: return  t.getPopularity();
 			}
 			return "";
 		}
