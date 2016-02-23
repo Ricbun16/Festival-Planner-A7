@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -76,6 +77,14 @@ public class GUI extends JFrame{
           	}
         });
         eastBorder.add(addPerformance);
+        
+        JButton saveFile = new JButton("Save");
+        saveFile.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e) {
+					schedule.saveSchedule();
+        	}
+        });
+        eastBorder.add(saveFile);
         
         content.add(eastBorder, BorderLayout.EAST);
         

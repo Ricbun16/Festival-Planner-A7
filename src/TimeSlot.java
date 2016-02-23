@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TimeSlot {
+public class TimeSlot implements Serializable {
 
 	int timeSlotStart = 0000;
 	int timeSlotEnd = 0100;
