@@ -14,6 +14,7 @@ public class Stage implements Serializable {
 		stageStartTime = startTime;
 		stageStopTime = stopTime;
 		this.setTimeSlotLength(timeSlotLength);
+		this.name = name;
 		int timeSlotStart = stageStartTime;
 		int timeSlotStop;
 		
