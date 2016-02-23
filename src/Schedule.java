@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 import javax.annotation.processing.FilerException;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -86,19 +85,5 @@ public class Schedule implements Serializable{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-
-	
-/*	public void saveSchedule() throws FileNotFoundException{
-		try{
-		PrintWriter pw = new PrintWriter(new FileOutputStream("agenda.txt"));
-		for(Stage stage : stages){
-			pw.write(stages.toString());
-			pw.print
-			pw.close();
-			}
-		}
-		catch(Exception e){ e.printStackTrace();}		
-	}*/
-
-}
+	}
 }
