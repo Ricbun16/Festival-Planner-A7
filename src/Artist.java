@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 //Class in which artist is named
-public class Artist {
+public class Artist implements Serializable{
 	private String artistName;
 	private ArrayList<String> genres;
 	

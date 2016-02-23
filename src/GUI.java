@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -76,6 +77,14 @@ public class GUI extends JFrame{
           	}
         });
         eastBorder.add(addPerformance);
+        
+        JButton saveFile = new JButton("Save");
+        saveFile.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e) {
+					schedule.saveSchedule();
+        	}
+        });
+        eastBorder.add(saveFile);
         
         content.add(eastBorder, BorderLayout.EAST);
         
@@ -163,14 +172,14 @@ public class GUI extends JFrame{
 	
 		
 		public Object getValueAt(int row, int column) {
-			TimeSlot T = timeSlots.get(row + 1);
+			/*TimeSlot T = timeSlots.get(row + 1);
 			switch(column){
 			case 0: return  T.getArtist();
 			case 1: return  T.getArtist().getGenre();
 			case 2: return  T.getTimeSlotStart();
 			case 3: return  T.getTimeSlotEnd();
 			case 4: return  T.getPopularity();
-			}
+			}*/
 			return "";
 		}
 		
