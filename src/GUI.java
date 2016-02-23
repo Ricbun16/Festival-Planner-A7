@@ -167,11 +167,11 @@ public class GUI extends JFrame{
 	private class ButtonListener implements ActionListener{
 		private short buttonState;
 		
-		public buttonListener(short buttonSate){
+		public buttonListener(short buttonState){
 			this.buttonState = buttonState;
 		}
 		
-		public void actionPerfomred(ActionEvent e){
+		public void actionPerformed(ActionEvent e){
 			state = buttonState;
 			switchState();
 		}
