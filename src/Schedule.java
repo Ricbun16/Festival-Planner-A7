@@ -1,6 +1,17 @@
 import java.util.ArrayList;
 
-public class Schedule {
+import javax.annotation.processing.FilerException;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.nio.file.FileSystemNotFoundException;
+
+public class Schedule implements Serializable{
 
 	private ArrayList<Artist> artists;
 	private ArrayList<Stage> stages;
@@ -64,4 +75,30 @@ public class Schedule {
 	public void setScheduleStopTime(int scheduleStopTime) {
 		this.scheduleStopTime = scheduleStopTime;
 	}
+	
+	public void saveSchedule()throws FileSystemNotFoundException{
+		try {
+			FileOutputStream fos = new FileOutputStream("agenda");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this);
+			oos.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+	
+/*	public void saveSchedule() throws FileNotFoundException{
+		try{
+		PrintWriter pw = new PrintWriter(new FileOutputStream("agenda.txt"));
+		for(Stage stage : stages){
+			pw.write(stages.toString());
+			pw.print
+			pw.close();
+			}
+		}
+		catch(Exception e){ e.printStackTrace();}		
+	}*/
+
+}
 }

@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Stage {
+public class Stage implements Serializable {
 	private ArrayList<Artist> artist = new ArrayList<Artist>();
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private int timeSlotLength;
@@ -59,4 +60,8 @@ public class Stage {
 		return timeSlots;
 	}
 
+	public String toString()
+	{
+		return name;
+	}
 }
