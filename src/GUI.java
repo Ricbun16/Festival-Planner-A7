@@ -163,14 +163,14 @@ public class GUI extends JFrame{
 	
 		
 		public Object getValueAt(int row, int column) {
-			TimeSlot T = timeSlots.get(row + 1);
+			/*TimeSlot T = timeSlots.get(row + 1);
 			switch(column){
 			case 0: return  T.getArtist();
 			case 1: return  T.getArtist().getGenre();
 			case 2: return  T.getTimeSlotStart();
 			case 3: return  T.getTimeSlotEnd();
 			case 4: return  T.getPopularity();
-			}
+			}*/
 			return "";
 		}
 		
