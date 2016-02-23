@@ -77,7 +77,7 @@ public class GUI extends JFrame{
         JButton addPerformance = new JButton("Add show");
         addPerformance.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
-        		
+        		addShow();
           	}
         });
         eastBorder.add(addPerformance);
@@ -119,6 +119,8 @@ public class GUI extends JFrame{
         setVisible(true);
 	}
 	
+	
+	
 	public void addStagePopUp(){
 		
 		JTextField field1 = new JTextField();
@@ -153,6 +155,39 @@ public class GUI extends JFrame{
 			
 		}
 		}
+public void addShow(){
+		
+		JTextField field1 = new JTextField();
+		JTextField field2 = new JTextField();
+		JTextField field3 = new JTextField();
+		
+		String artistName;
+		String genre;
+		int timeSlot;
+		
+		Object[] message = {"Artist Name: ",field1,"Genre: " ,field2,
+		"TimeSlot: ", field3
+		};
+		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+		if(option == JOptionPane.OK_OPTION)
+		{
+			artistName = field1.getText();
+			genre = field2.getText();
+			timeSlot = Integer.parseInt(field3.getText());
+			ArrayList<Stage> stages = schedule.getStages();
+			try{
+			Stage currentStage = stages.get(state-1);
+
+			Artist artist = new Artist(artistName, genre);
+			currentStage.scheduleArtist(timeSlot, artist);
+			}
+			catch(IndexOutOfBoundsException e)
+			{
+				
+			}
+		}
+		}
+	
 	
 	
 	public void makeButton(String name) {

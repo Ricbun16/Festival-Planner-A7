@@ -4,10 +4,16 @@ import java.util.*;
 public class Artist implements Serializable{
 	private String artistName;
 	private ArrayList<String> genres;
+	private String genre;
 	
 	public Artist(String name, ArrayList<String> genres)
 	{
 		this.genres = genres;
+		artistName = name;
+	}
+	public Artist(String name, String genre)
+	{
+		this.genre = genre;
 		artistName = name;
 	}
 	
