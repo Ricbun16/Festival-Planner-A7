@@ -90,6 +90,18 @@ public class GUI extends JFrame{
         });
         eastBorder.add(saveFile);
         
+        JButton loadFile = new JButton("Load");
+        loadFile.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e) {
+        		try {
+					schedule.loadSchedule();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        });
+        eastBorder.add(loadFile);
+        
         content.add(eastBorder, BorderLayout.EAST);
         
         JPanel northBorder = new JPanel(new FlowLayout());

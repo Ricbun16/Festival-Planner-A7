@@ -2,11 +2,13 @@ import java.util.ArrayList;
 
 import javax.annotation.processing.FilerException;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.nio.file.FileSystemNotFoundException;
 
@@ -18,6 +20,10 @@ public class Schedule implements Serializable{
 	private int scheduleStartTime;
 	private int scheduleStopTime;
 	
+	public Schedule()
+	{
+		
+	}
 	public Schedule(int startTime, int stopTime)
 	{
 		stages = new ArrayList<Stage>();
@@ -85,5 +91,28 @@ public class Schedule implements Serializable{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Schedule loadSchedule()throws FileNotFoundException{
+		try{
+			FileInputStream fis = new FileInputStream("agenda");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			Object object = ois.readObject();
+			ois.close();
+			if(object instanceof Schedule){
+				System.out.println("Agenda has loaded.");
+				Schedule temp = new Schedule();
+//				artists = temp.getArtist();
+				stages = temp.getStages();
+				System.out.println("Stage:" + stages);
+			return (Schedule) object;
+			}
+			return null;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 }
