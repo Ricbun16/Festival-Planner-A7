@@ -18,7 +18,7 @@ public class Schedule implements Serializable{
 	private int scheduleStartTime;
 	private int scheduleStopTime;
 	
-	public Schedule(int startTime, int stopTime)
+	public Schedule(int startTime, int stopTime) //hours
 	{
 		stages = new ArrayList<Stage>();
 		artists = new ArrayList<Artist>();

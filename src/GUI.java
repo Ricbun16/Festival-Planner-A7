@@ -28,6 +28,8 @@ public class GUI extends JFrame{
 	private short state = 0, buttonState = 0;
  	private String title;
  	private JLabel titleLabel;
+ 	private int scheduleStart;
+ 	private int scheduleStop;
  	
 	public static void main(String s[]){
 		new GUI();
@@ -38,10 +40,34 @@ public class GUI extends JFrame{
 		setSize(1000, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		makeFrame();
-		schedule = new Schedule(600, 1200);
+		getScheduleTime();
+		schedule = new Schedule(scheduleStart, scheduleStop);
 		timeSlots = new ArrayList<TimeSlot>();
 		this.artists = schedule.getArtist();
 	}
+public void getScheduleTime(){
+		
+		JTextField field1 = new JTextField();
+		JTextField field2 = new JTextField();
+		
+		int hoursStart;
+		int hoursStop;
+		
+		Object[] message = {"Start Uur",field1,"Eind Uur:",field2,		};
+		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+		if(option == JOptionPane.OK_OPTION)
+		{
+			
+			hoursStart = Integer.parseInt(field1.getText());
+			hoursStop = Integer.parseInt(field2.getText());
+			if(hoursStart<= hoursStop){
+			scheduleStart = hoursStart;
+			scheduleStop = hoursStop;
+			}
+			else { System.out.println("Geen geledige schedule tijd");}
+			
+		}
+		}
 	
 	private void makeFrame(){
 		
@@ -146,14 +172,17 @@ public class GUI extends JFrame{
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.OK_OPTION)
 		{
+			
 			hoursStart = Integer.parseInt(field1.getText());
 			minuteStart = Integer.parseInt(field2.getText());
 			hoursStop = Integer.parseInt(field3.getText());
 			minuteStop = Integer.parseInt(field4.getText());
 			stageName = (String)field5.getText();
 			timeSlotLength = Integer.parseInt(field6.getText());
+			if(schedule.getScheduleStartTime() <= hoursStart && schedule.getScheduleStopTime() >= hoursStop && hoursStart < hoursStop){
 			schedule.addStage(stageName, hoursStart*60+minuteStart,hoursStop*60+minuteStop, timeSlotLength);
-			makeButton(stageName);
+			makeButton(stageName);}
+			else { System.out.println("Stage valt buiten schedule");}
 			
 		}
 		}
