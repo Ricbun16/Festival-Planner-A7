@@ -23,6 +23,9 @@ public class GUI extends JFrame{
 	
 	private Schedule schedule;
 	private JPanel westBorder;
+	private JPanel center;
+	private JTable table;
+	private TableModel tableModel = new TableModel();
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private ArrayList<Artist> artists = new ArrayList<Artist>();
 	private short state = 0, buttonState = 0;
@@ -143,15 +146,20 @@ public void getScheduleTime(){
         southBorder.add(new JLabel(" "));
         content.add(southBorder, BorderLayout.SOUTH);
         
-        JPanel center = new JPanel(new BorderLayout());
+        center = new JPanel(new BorderLayout());
         JPanel centerNorth = new JPanel(new FlowLayout());
         //centerNorth.add(new JLabel("Artist & Genres"));
+        
+        
+        table = new JTable(tableModel);
+        center.add(new JScrollPane(table), BorderLayout.CENTER);
+        
+        
         switchState();
+        
         centerNorth.add(titleLabel);
         centerNorth.setBorder(blackline);
         center.add(centerNorth, BorderLayout.NORTH);
-        
-        center.add(new JScrollPane(new JTable(new TableModel())), BorderLayout.CENTER);
         
         content.add(center, BorderLayout.CENTER);
         
@@ -225,7 +233,8 @@ public void addShow(){
 			genre = field2.getText();
 			timeSlot = Integer.parseInt(field3.getText());}
 			catch(NumberFormatException e){}
-			ArrayList<Stage> stages = schedule.getStages();
+			ArrayList<Stage> stages = new ArrayList<Stage>();
+			stages = schedule.getStages();
 			try{
 			Stage currentStage = stages.get(state-1);
 			Artist artist = null;
@@ -265,7 +274,13 @@ public void addShow(){
 			{
 				
 			}
-			
+				center.remove(table);
+				tableModel.refresh();
+				table = new JTable(tableModel);
+		        center.add(new JScrollPane(table), BorderLayout.CENTER);
+		        center.repaint();
+		        revalidate();
+		        repaint();
 
 		}
 		}
@@ -288,15 +303,26 @@ public void addShow(){
 				case 0: titleLabel.setText("Artist & Genres");
 					break;
 				case 1: titleLabel.setText(stages.get(0).getName());
+						fillTimeslots(stages.get(0));
 					break;
 				case 2:	titleLabel.setText(stages.get(1).getName());
+						fillTimeslots(stages.get(1));
 					break;
 				case 3:	titleLabel.setText(stages.get(2).getName());
+						fillTimeslots(stages.get(2));
 					break;
 			}
 		} catch(NullPointerException e) {
 			titleLabel = new JLabel("Artist & Genres");
 		}
+		center.remove(table);
+		tableModel.refresh();
+		table = new JTable(tableModel);
+        center.add(new JScrollPane(table), BorderLayout.CENTER);
+        center.repaint();
+        
+        revalidate();
+        repaint();
 	}
 	
 	private class ButtonListener implements ActionListener{
@@ -315,7 +341,7 @@ public void addShow(){
 		timeSlots.clear();
 		ArrayList<TimeSlot> tempList = currentStage.getTimeSlots();
 		for(int i = 0;i<tempList.size();i++){
-			if(!tempList.get(i).checkIsOccupied())
+			if(tempList.get(i).checkIsOccupied())
 				timeSlots.add(tempList.get(i));
 		}
 	}
@@ -335,7 +361,7 @@ public void addShow(){
 			if(timeSlots.size()!=0)
 			return timeSlots.size();
 			else 
-			return 1;
+			return 0;
 		}
 		
 	
@@ -348,8 +374,8 @@ public void addShow(){
 				return "";
 				
 			switch(column){
-			case 0: return  t.getArtist();
-			case 1: return  t.getGenre();
+			case 0: return  t.getArtist().getName();
+			case 1: return  t.getArtist().getGenre();
 			case 2: return  t.getTimeSlotStart();
 			case 3: return  t.getTimeSlotEnd();
 			case 4: return  t.getPopularity();
@@ -370,6 +396,10 @@ public void addShow(){
 			case 4: return "Popularity";
 			}
 			return"";
+		}
+		
+		public void refresh(){
+			fireTableDataChanged();
 		}
 			
 	}

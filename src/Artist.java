@@ -27,9 +27,9 @@ public class Artist implements Serializable{
 		artistName = name;
 	}
 	
-	public ArrayList<String> getGenre()
+	public String getGenre()
 	{
-		return genres;
+		return genre;
 	}
 	
 	public void addGenre(String genre)
