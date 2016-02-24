@@ -194,7 +194,8 @@ public void getScheduleTime(){
 			if(schedule.getScheduleStartTime() <= hoursStart && schedule.getScheduleStopTime() >= hoursStop && hoursStart < hoursStop){
 			schedule.addStage(stageName, hoursStart*60+minuteStart,hoursStop*60+minuteStop, timeSlotLength);
 			makeButton(stageName);}
-			else { System.out.println("Stage valt buiten schedule");}
+			else { System.out.println("Stage valt buiten schedule");
+			getScheduleTime();}
 			
 		}
 		}
