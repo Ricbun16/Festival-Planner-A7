@@ -225,9 +225,12 @@ public void addShow(){
 					artistSet = true;
 				}
 			}
+			if(schedule.checkDoubleBooking(artist, timeSlot, currentStage) == false){
 			if(artistSet){
+				
 				try{
 			currentStage.scheduleArtist(timeSlot, artist);
+			fillTimeslots(currentStage);
 			}
 				
 			catch(Exception e){}}
@@ -236,13 +239,20 @@ public void addShow(){
 				artist = new Artist(artistName, genre);
 				artists.add(artist);
 				currentStage.scheduleArtist(timeSlot, artist);
+				fillTimeslots(currentStage);
 				schedule.setArtists(artists);
+			}
+			}
+			else
+			{
+				System.out.println("De artiest is dubbel geboekt");
 			}
 			}
 			catch(IndexOutOfBoundsException e)
 			{
 				
 			}
+			
 
 		}
 		}
@@ -314,6 +324,7 @@ public void addShow(){
 			else 
 			return 1;
 		}
+		
 	
 		
 		public Object getValueAt(int row, int column) {

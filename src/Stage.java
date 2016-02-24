@@ -62,6 +62,11 @@ public class Stage implements Serializable {
 	public ArrayList<TimeSlot> getTimeSlots() {
 		return timeSlots;
 	}
+	
+	 public TimeSlot getTimeSlot(int i)
+	 {
+		 return timeSlots.get(i);
+	 }
 
 	public String toString()
 	{

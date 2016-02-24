@@ -34,6 +34,33 @@ public class Schedule implements Serializable{
 	public void setArtist(String artistName) {
 		this.setArtistName(artistName);
 	}
+	
+	public boolean checkDoubleBooking(Artist artist,int timeSlotNumber, Stage bookedStage)
+	{
+		boolean returnValue = false; //false is not booked true is booked.
+		TimeSlot bookedSlot = bookedStage.getTimeSlot(timeSlotNumber);
+		int startTime = bookedSlot.getTimeSlotStart();
+		int stopTime = bookedSlot.getTimeSlotEnd();
+		
+		for(Stage stage: stages)
+		{
+			ArrayList<TimeSlot> timeSlots= stage.getTimeSlots();
+			for(TimeSlot timeslot : timeSlots)
+			{
+				if(timeslot.getOccupied())
+				{
+					if(timeslot.getArtist().equals(artist))
+					{
+						if(timeslot.getTimeSlotStart() >= startTime && timeslot.getTimeSlotEnd()<= stopTime)
+						{
+							returnValue = true;
+						}
+					}
+				}
+			}
+		}
+		return returnValue;
+	}
 
 	public ArrayList<Artist> getArtist() {
 		return artists;
