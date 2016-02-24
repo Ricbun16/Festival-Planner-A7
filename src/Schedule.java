@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import javax.annotation.processing.FilerException;
 
-import java.io.FileInputStream
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
