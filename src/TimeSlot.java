@@ -70,6 +70,10 @@ public class TimeSlot implements Serializable {
 	public void setOccupied(boolean isOccupied) {
 		this.isOccupied = isOccupied;
 	}
+	public boolean getOccupied()
+	{
+		return isOccupied;
+	}
 
 	// set the integer popularity
 	public void setPopularity(int popularity) {

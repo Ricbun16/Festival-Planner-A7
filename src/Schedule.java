@@ -31,7 +31,7 @@ public class Schedule implements Serializable{
 		stages.add(stage);
 	}
 	
-	public void setArtists(String artistName) {
+	public void setArtist(String artistName) {
 		this.setArtistName(artistName);
 	}
 
@@ -39,7 +39,7 @@ public class Schedule implements Serializable{
 		return artists;
 	}
 
-	public void setArtist(ArrayList<Artist> artist) {
+	public void setArtists(ArrayList<Artist> artist) {
 		this.artists = artist;
 	}
 

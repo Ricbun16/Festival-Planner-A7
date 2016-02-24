@@ -24,6 +24,7 @@ public class GUI extends JFrame{
 	private Schedule schedule;
 	private JPanel westBorder;
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
+	private ArrayList<Artist> artists = new ArrayList<Artist>();
 	private short state = 0, buttonState = 0;
  	private String title;
  	private JLabel titleLabel;
@@ -39,6 +40,7 @@ public class GUI extends JFrame{
 		makeFrame();
 		schedule = new Schedule(600, 1200);
 		timeSlots = new ArrayList<TimeSlot>();
+		this.artists = schedule.getArtist();
 	}
 	
 	private void makeFrame(){
@@ -161,9 +163,9 @@ public void addShow(){
 		JTextField field2 = new JTextField();
 		JTextField field3 = new JTextField();
 		
-		String artistName;
-		String genre;
-		int timeSlot;
+		String artistName =null;
+		String genre = null;
+		int timeSlot = 0;
 		
 		Object[] message = {"Artist Name: ",field1,"Genre: " ,field2,
 		"TimeSlot: ", field3
@@ -171,20 +173,48 @@ public void addShow(){
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.OK_OPTION)
 		{
+			for(Artist testArtist: artists)
+			{
+				System.out.println(testArtist.getName());
+			}
+			
+			try{
 			artistName = field1.getText();
 			genre = field2.getText();
-			timeSlot = Integer.parseInt(field3.getText());
+			timeSlot = Integer.parseInt(field3.getText());}
+			catch(NumberFormatException e){}
 			ArrayList<Stage> stages = schedule.getStages();
 			try{
 			Stage currentStage = stages.get(state-1);
-
-			Artist artist = new Artist(artistName, genre);
+			Artist artist = null;
+			boolean artistSet = false;
+			for(Artist currentArtist: artists)
+			{
+				if(currentArtist.getName().equals( artistName))
+				{
+					artist = currentArtist;
+					artistSet = true;
+				}
+			}
+			if(artistSet){
+				try{
 			currentStage.scheduleArtist(timeSlot, artist);
+			}
+				
+			catch(Exception e){}}
+			else
+			{
+				artist = new Artist(artistName, genre);
+				artists.add(artist);
+				currentStage.scheduleArtist(timeSlot, artist);
+				schedule.setArtists(artists);
+			}
 			}
 			catch(IndexOutOfBoundsException e)
 			{
 				
 			}
+
 		}
 		}
 	

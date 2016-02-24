@@ -29,10 +29,12 @@ public class Stage implements Serializable {
 
 	public void scheduleArtist(int i, Artist artist) {
 		TimeSlot currentSlot = timeSlots.get(i);
+		if(currentSlot.getOccupied() == false){
 		currentSlot.setOccupied(true);
 		currentSlot.setArtist(artist);
-		timeSlots.set(i, currentSlot);
-		
+		timeSlots.set(i, currentSlot);}
+		else{System.out.println("TimeSlot is occupied");
+		}
 	}
 	
 	// Gets the stage name.
