@@ -120,7 +120,7 @@ public class Schedule implements Serializable{
 		}
 	}
 	
-	public Schedule load()throws FileNotFoundException{
+	public static Schedule load()throws FileNotFoundException{
 		try{
 			FileInputStream fis = new FileInputStream("agenda");
 			ObjectInputStream ois = new ObjectInputStream(fis);
