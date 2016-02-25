@@ -128,7 +128,9 @@ public class Schedule implements Serializable{
 			Object object = ois.readObject();
 			ois.close();
 			if(object instanceof Schedule){
+				System.out.println("Agenda has loaded.");
 				Schedule temp = (Schedule) object;
+								
 				return temp;
 			}
 			return null;

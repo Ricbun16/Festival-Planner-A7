@@ -28,6 +28,7 @@ public class GUI extends JFrame{
 	private TableModel tableModel = new TableModel();
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private ArrayList<Artist> artists = new ArrayList<Artist>();
+	private ArrayList<Stage> stages;
 	private short state = 0, buttonState = 0;
  	private String title;
  	private JLabel titleLabel;
@@ -128,6 +129,8 @@ public void getScheduleTime(){
 				Schedule temp = Schedule.load();
 				if(temp != null){
 					schedule = temp;
+					artists = temp.getArtist();
+					stages = temp.getStages();
 					tableModel.refresh();
 				}
 				} catch (FileNotFoundException e1) {
