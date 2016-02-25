@@ -120,7 +120,7 @@ public class Schedule implements Serializable{
 		}
 	}
 	
-	public Schedule loadSchedule()throws FileNotFoundException{
+	public Schedule load()throws FileNotFoundException{
 		try{
 			FileInputStream fis = new FileInputStream("agenda");
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -128,12 +128,8 @@ public class Schedule implements Serializable{
 			Object object = ois.readObject();
 			ois.close();
 			if(object instanceof Schedule){
-				System.out.println("Agenda has loaded.");
-				Schedule temp = new Schedule();
-//				artists = temp.getArtist();
-				stages = temp.getStages();
-				System.out.println("Stage:" + stages);
-			return (Schedule) object;
+				Schedule temp = (Schedule) object;
+				return temp;
 			}
 			return null;
 		}
