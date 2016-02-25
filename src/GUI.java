@@ -125,7 +125,11 @@ public void getScheduleTime(){
         loadFile.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
         		try {
-					schedule.loadSchedule();
+				Schedule temp = Schedule.load();
+				if(temp != null){
+					schedule = temp;
+					tableModel.refresh();
+				}
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
