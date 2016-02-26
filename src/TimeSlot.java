@@ -7,14 +7,16 @@ public class TimeSlot implements Serializable {
 	int timeSlotEnd = 0100;
 	int popularity = 0;
 	String genre = "No genre available";
+	String stageName;
 	boolean isOccupied = false;
 	//ArrayList<Artist> artists = new ArrayList<Artist>();
 	Artist artist = new Artist("No artist available", new ArrayList<String>());
 	
-	public TimeSlot(int timeSlotStart, int timeSlotEnd, boolean isOccupied) {
+	public TimeSlot(int timeSlotStart, int timeSlotEnd, boolean isOccupied,String stageName) {
 		this.timeSlotStart = timeSlotStart;
 		this.timeSlotEnd = timeSlotEnd;
 		this.isOccupied = isOccupied;
+		this.stageName = stageName;
 	}
 /*	
 	// add an artist to arraylist with artists
@@ -46,6 +48,10 @@ public class TimeSlot implements Serializable {
 		return isOccupied;
 	}
 	
+	public String getStageName(){
+		return stageName;
+	}
+	
 	// return starting time
 	public int getTimeSlotStart() {
 		return timeSlotStart;
@@ -54,6 +60,37 @@ public class TimeSlot implements Serializable {
 	// return ending time
 	public int getTimeSlotEnd() {
 		return timeSlotEnd;
+	}
+	
+	public String getTimeSlotStartString(){
+		String start = timeSlotStart+"";
+		if(start.length()<4){
+			return 0 + start;
+		}else{
+			return start;
+		}
+	}
+	
+	public String getTimeSlotEndString(){
+		String end = timeSlotEnd+"";
+		if(end.length()<4){
+			return 0 + end;
+		}else{
+			return end;
+		}
+	}
+	
+	public String timeSlotStartToString(){
+		
+		String hours = getTimeSlotStartString().substring(0,2);
+		String minutes = getTimeSlotStartString().substring(2,4);
+		return hours+":"+minutes;
+		}
+	
+	public String timeSlotEndToString(){
+		String hours = getTimeSlotEndString().substring(0,2);
+		String minutes = getTimeSlotEndString().substring(2,4);
+		return hours+":"+minutes;
 	}
 	
 	// return populartity

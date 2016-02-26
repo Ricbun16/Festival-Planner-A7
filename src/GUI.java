@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -25,11 +26,13 @@ public class GUI extends JFrame{
 	private JPanel westBorder;
 	private JPanel center;
 	private JTable table;
+	private JButton addPerformance;
 	private TableModel tableModel = new TableModel();
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private ArrayList<Artist> artists = new ArrayList<Artist>();
 	private ArrayList<Stage> stages;
 	private short state = 0, buttonState = 0;
+	private boolean artistGenreMode = true;
  	private String title;
  	private JLabel titleLabel;
  	private int scheduleStart;
@@ -64,11 +67,11 @@ public void getScheduleTime(){
 			
 			hoursStart = Integer.parseInt(field1.getText());
 			hoursStop = Integer.parseInt(field2.getText());
-			if(hoursStart<= hoursStop){
+			if(hoursStart<= hoursStop && hoursStart<25 && hoursStop < 25){
 			scheduleStart = hoursStart;
 			scheduleStop = hoursStop;
 			}
-			else { System.out.println("Geen geledige schedule tijd");}
+			else {JOptionPane.showMessageDialog(null, "Geen geldige schedule tijd", "Error", JOptionPane.INFORMATION_MESSAGE);}
 			
 		}
 		}
@@ -106,13 +109,14 @@ public void getScheduleTime(){
         });
         eastBorder.add(addStage);    
         
-        JButton addPerformance = new JButton("Add show");
+        addPerformance = new JButton("Add show");
         addPerformance.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { 
         		addShow();
           	}
         });
         eastBorder.add(addPerformance);
+        addPerformance.setEnabled(false);
         
         JButton saveFile = new JButton("Save");
         saveFile.addActionListener(new ActionListener(){
@@ -131,7 +135,11 @@ public void getScheduleTime(){
 					schedule = temp;
 					artists = temp.getArtist();
 					stages = temp.getStages();
+					addButtonsLoad();
+					switchState();
 					tableModel.refresh();
+					repaint();
+					
 				}
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
@@ -206,12 +214,15 @@ public void getScheduleTime(){
 			minuteStop = Integer.parseInt(field4.getText());
 			stageName = (String)field5.getText();
 			timeSlotLength = Integer.parseInt(field6.getText());
+			if(minuteStart >= 60){minuteStart -=60;hoursStart+=1;}
+			if(minuteStop >= 60){minuteStop -=60;hoursStop+=1;}
+			int timeStart =  hoursStart*100+minuteStart;
+			int timeStop = hoursStop*100+minuteStop;
 			if(schedule.getScheduleStartTime() <= hoursStart && schedule.getScheduleStopTime() >= hoursStop && hoursStart < hoursStop){
-			schedule.addStage(stageName, hoursStart*60+minuteStart,hoursStop*60+minuteStop, timeSlotLength);
+			schedule.addStage(stageName,timeStart,timeStop, timeSlotLength);
 			makeButton(stageName);}
-			else { System.out.println("Stage valt buiten schedule");
+			else { JOptionPane.showMessageDialog(null, "Stage valt buiten schema", "Error", JOptionPane.INFORMATION_MESSAGE);
 			getScheduleTime();}
-			
 		}
 		}
 public void addShow(){
@@ -219,12 +230,14 @@ public void addShow(){
 		JTextField field1 = new JTextField();
 		JTextField field2 = new JTextField();
 		JTextField field3 = new JTextField();
+		JTextField field4 = new JTextField();
 		
 		String artistName =null;
 		String genre = null;
 		int timeSlot = 0;
+		int popularity = 0;
 		
-		Object[] message = {"Artist Name: ",field1,"Genre: " ,field2,
+		Object[] message = {"Artist Name: ",field1,"Genre: " ,field2,"Popularity: ",field4,
 		"TimeSlot: ", field3
 		};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
@@ -232,7 +245,7 @@ public void addShow(){
 		{
 			for(Artist testArtist: artists)
 			{
-				System.out.println(testArtist.getName());
+				//System.out.println(testArtist.getName());
 			}
 			
 			try{
@@ -246,6 +259,7 @@ public void addShow(){
 			Stage currentStage = stages.get(state-1);
 			Artist artist = null;
 			boolean artistSet = false;
+			
 			for(Artist currentArtist: artists)
 			{
 				if(currentArtist.getName().equals( artistName))
@@ -259,6 +273,7 @@ public void addShow(){
 				
 				try{
 			currentStage.scheduleArtist(timeSlot, artist);
+			currentStage.getTimeSlot(timeSlot).setPopularity(Integer.parseInt(field4.getText()));
 			fillTimeslots(currentStage);
 			}
 				
@@ -267,28 +282,25 @@ public void addShow(){
 			{
 				artist = new Artist(artistName, genre);
 				artists.add(artist);
+				
 				currentStage.scheduleArtist(timeSlot, artist);
+				currentStage.getTimeSlot(timeSlot).setPopularity(Integer.parseInt(field4.getText()));
 				fillTimeslots(currentStage);
 				schedule.setArtists(artists);
 			}
 			}
 			else
 			{
-				System.out.println("De artiest is dubbel geboekt");
+				JOptionPane.showMessageDialog(null, "De artiest is dubbel geboekt", "Error", JOptionPane.INFORMATION_MESSAGE);
+				
 			}
 			}
 			catch(IndexOutOfBoundsException e)
 			{
 				
 			}
-				center.remove(table);
 				tableModel.refresh();
-				table = new JTable(tableModel);
-		        center.add(new JScrollPane(table), BorderLayout.CENTER);
-		        center.repaint();
-		        revalidate();
-		        repaint();
-
+				repaint();
 		}
 		}
 	
@@ -300,6 +312,7 @@ public void addShow(){
       	buttonState++;
  	button.addActionListener(new ButtonListener(buttonState));
  	westBorder.add(button);
+ 	
  	revalidate();
  	}
 	
@@ -308,28 +321,59 @@ public void addShow(){
 			ArrayList<Stage> stages = schedule.getStages();
 			switch(state){
 				case 0: titleLabel.setText("Artist & Genres");
+						fillTimeslotsAll();
+						artistGenreMode = true;
+						tableModel.fireTableStructureChanged();
+						addPerformance.setEnabled(false);
 					break;
 				case 1: titleLabel.setText(stages.get(0).getName());
+						artistGenreMode = false;
+						tableModel.fireTableStructureChanged();
 						fillTimeslots(stages.get(0));
+				        addPerformance.setEnabled(true);
 					break;
 				case 2:	titleLabel.setText(stages.get(1).getName());
+						artistGenreMode = false;
+						tableModel.fireTableStructureChanged();
+						addPerformance.setEnabled(true);
 						fillTimeslots(stages.get(1));
 					break;
 				case 3:	titleLabel.setText(stages.get(2).getName());
+						artistGenreMode = false;
+						tableModel.fireTableStructureChanged();
+						addPerformance.setEnabled(true);
 						fillTimeslots(stages.get(2));
 					break;
 			}
 		} catch(NullPointerException e) {
 			titleLabel = new JLabel("Artist & Genres");
 		}
-		center.remove(table);
 		tableModel.refresh();
-		table = new JTable(tableModel);
-        center.add(new JScrollPane(table), BorderLayout.CENTER);
-        center.repaint();
-        
-        revalidate();
-        repaint();
+		repaint();
+	}
+	
+	private void addButtonsLoad(){
+		westBorder.removeAll();
+		state = 0;
+		buttonState = 0;
+		westBorder.add(new JLabel(" "));
+        JButton artistAndGenre = new JButton("Artist & Genre");
+        artistAndGenre.setSize(100, 200);
+        artistAndGenre.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { 
+        		state = 0;
+         		switchState();
+          	}
+        }); 
+        westBorder.add(artistAndGenre);      
+		ArrayList<Stage> tempList = schedule.getStages();
+		Stage tempStage;
+		for(int i = 0;i<tempList.size();i++){
+			tempStage = tempList.get(i);
+			makeButton(tempStage.getName());
+		}
+			
+		
 	}
 	
 	private class ButtonListener implements ActionListener{
@@ -351,20 +395,35 @@ public void addShow(){
 			if(tempList.get(i).checkIsOccupied())
 				timeSlots.add(tempList.get(i));
 		}
+		}
+		
+		public void fillTimeslotsAll(){
+			timeSlots.clear();
+			ArrayList<Stage> stagesTemp = schedule.getStages();
+			for(int x = 0; x<stagesTemp.size();x++){
+			Stage currentStage = stagesTemp.get(x);	
+			ArrayList<TimeSlot> tempList = currentStage.getTimeSlots();
+			for(int i = 0;i<tempList.size();i++){
+				if(tempList.get(i).checkIsOccupied())
+					timeSlots.add(tempList.get(i));
+			}
+			}
 	}
 	
 	public class TableModel extends AbstractTableModel{
 	
+
 		@Override
 		public int getColumnCount() {
-			// TODO Auto-generated method stub
-			return 5;
+			if(artistGenreMode == true)
+				return 6;
+			else 
+				return 5;
 		}
 	
 		
 		@Override
 		public int getRowCount() {
-			// TODO Auto-generated method stub
 			if(timeSlots.size()!=0)
 			return timeSlots.size();
 			else 
@@ -383,9 +442,10 @@ public void addShow(){
 			switch(column){
 			case 0: return  t.getArtist().getName();
 			case 1: return  t.getArtist().getGenre();
-			case 2: return  t.getTimeSlotStart();
-			case 3: return  t.getTimeSlotEnd();
+			case 2: return  t.timeSlotStartToString();
+			case 3: return  t.timeSlotEndToString();
 			case 4: return  t.getPopularity();
+			case 5: return  t.getStageName();
 			}
 			return "";
 		}
@@ -401,12 +461,14 @@ public void addShow(){
 			case 2: return "Start";
 			case 3: return "End";
 			case 4: return "Popularity";
+			case 5: return "Stage";
 			}
 			return"";
 		}
 		
 		public void refresh(){
 			fireTableDataChanged();
+			
 		}
 			
 	}
