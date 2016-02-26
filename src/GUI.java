@@ -222,7 +222,7 @@ public void getScheduleTime(){
 			schedule.addStage(stageName,timeStart,timeStop, timeSlotLength);
 			makeButton(stageName);}
 			else { JOptionPane.showMessageDialog(null, "Stage valt buiten schema", "Error", JOptionPane.INFORMATION_MESSAGE);
-			S}
+			}
 		}
 		}
 public void addShow(){
