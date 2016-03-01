@@ -47,10 +47,11 @@ public class Schedule implements Serializable{
 		TimeSlot bookedSlot = bookedStage.getTimeSlot(timeSlotNumber);
 		int startTime = bookedSlot.getTimeSlotStart();
 		int stopTime = bookedSlot.getTimeSlotEnd();
-		
+		ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 		for(Stage stage: stages)
 		{
-			ArrayList<TimeSlot> timeSlots= stage.getTimeSlots();
+			timeSlots = stage.getTimeSlots();
+		
 			for(TimeSlot timeslot : timeSlots)
 			{
 				if(timeslot.getOccupied())

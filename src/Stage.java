@@ -41,11 +41,12 @@ public class Stage implements Serializable {
 		}
 	}
 
-	public void scheduleArtist(int i, Artist artist) {
+	public void scheduleArtist(int i, Artist artist,int popularity) {
 		TimeSlot currentSlot = timeSlots.get(i);
 		if(currentSlot.getOccupied() == false){
 		currentSlot.setOccupied(true);
 		currentSlot.setArtist(artist);
+		currentSlot.setPopularity(popularity);
 		timeSlots.set(i, currentSlot);}
 		else{JOptionPane.showMessageDialog(null, "Timeslot is occupied", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
