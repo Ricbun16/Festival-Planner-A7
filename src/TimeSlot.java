@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 public class TimeSlot implements Serializable {
 
-	int timeSlotStart = 0000;
-	int timeSlotEnd = 0100;
+	int timeSlotStart;
+	int timeSlotEnd;
 	int popularity = 0;
 	String genre = "No genre available";
 	String stageName;
