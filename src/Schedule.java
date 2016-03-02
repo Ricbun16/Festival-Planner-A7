@@ -2,12 +2,13 @@ import java.util.ArrayList;
 
 import javax.annotation.processing.FilerException;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.nio.file.FileSystemNotFoundException;
 
@@ -19,7 +20,11 @@ public class Schedule implements Serializable{
 	private int scheduleStartTime;
 	private int scheduleStopTime;
 	
-	public Schedule(int startTime, int stopTime)
+	public Schedule()
+	{
+		
+	}
+	public Schedule(int startTime, int stopTime) //hours
 	{
 		stages = new ArrayList<Stage>();
 		artists = new ArrayList<Artist>();
@@ -32,15 +37,42 @@ public class Schedule implements Serializable{
 		stages.add(stage);
 	}
 	
-	public void setArtists(String artistName) {
+	public void setArtist(String artistName) {
 		this.setArtistName(artistName);
+	}
+	
+	public boolean checkDoubleBooking(Artist artist,int timeSlotNumber, Stage bookedStage)
+	{
+		boolean returnValue = false; //false is not booked true is booked.
+		TimeSlot bookedSlot = bookedStage.getTimeSlot(timeSlotNumber);
+		int startTime = bookedSlot.getTimeSlotStart();
+		int stopTime = bookedSlot.getTimeSlotEnd();
+		
+		for(Stage stage: stages)
+		{
+			ArrayList<TimeSlot> timeSlots= stage.getTimeSlots();
+			for(TimeSlot timeslot : timeSlots)
+			{
+				if(timeslot.getOccupied())
+				{
+					if(timeslot.getArtist().equals(artist))
+					{
+						if(timeslot.getTimeSlotStart() >= startTime && timeslot.getTimeSlotEnd()<= stopTime)
+						{
+							returnValue = true;
+						}
+					}
+				}
+			}
+		}
+		return returnValue;
 	}
 
 	public ArrayList<Artist> getArtist() {
 		return artists;
 	}
 
-	public void setArtist(ArrayList<Artist> artist) {
+	public void setArtists(ArrayList<Artist> artist) {
 		this.artists = artist;
 	}
 
@@ -86,19 +118,26 @@ public class Schedule implements Serializable{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-
+	}
 	
-/*	public void saveSchedule() throws FileNotFoundException{
+	public static Schedule load()throws FileNotFoundException{
 		try{
-		PrintWriter pw = new PrintWriter(new FileOutputStream("agenda.txt"));
-		for(Stage stage : stages){
-			pw.write(stages.toString());
-			pw.print
-			pw.close();
+			FileInputStream fis = new FileInputStream("agenda");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			Object object = ois.readObject();
+			ois.close();
+			if(object instanceof Schedule){
+				System.out.println("Agenda has loaded.");
+				Schedule temp = (Schedule) object;
+								
+				return temp;
 			}
+			return null;
 		}
-		catch(Exception e){ e.printStackTrace();}		
-	}*/
-
-}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
 }
