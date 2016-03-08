@@ -21,6 +21,8 @@ public class TiledLoader {
 	private ArrayList<TiledTileset> tilesets;
 	private ArrayList<TiledLayer> tilelayers;
 	private ArrayList<BufferedImage> tilesetTiles;
+	private Graphics2D g2;
+
 	
 	public TiledLoader(){
 		
@@ -34,9 +36,13 @@ public class TiledLoader {
 		}
 	}
 	
-	public void draw(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-
+	public void draw(Graphics2D g){
+		for(int i = 0; i < tilelayers.size(); i++)
+		{
+			if(tilelayers.get(i).isVisible()) 
+				g.drawImage(tilelayers.get(i).layerImage, 0, 0, null);
+		}
+		
 	}
 	
 	public void loadFile(File file) throws FileNotFoundException, IOException, ParseException{
@@ -82,20 +88,46 @@ public class TiledLoader {
 		
 	}
 	
-	public ArrayList<TiledLayer> getTiledLayers() {
-		return tilelayers;
-	}
-	
-	public TiledLayer getTiledLayer(String name) {
-		for(TiledLayer tLayer : tilelayers) {
-			if(tLayer.getName() == name) {
-				return tLayer;
+	public void createLayers() {
+		for(int i = 0; i < tilelayers.size(); i++) {
+			System.out.println(tilelayers.size());
+			System.out.println(tilesets.size());
+			long numberID = 0;
+			TiledTileset ts = new TiledTileset();
+			for(TiledLayer tl : tilelayers) {
+				for(Long idnumber : tl.getData()) {
+					if (idnumber != 0)
+						numberID = idnumber;
+				}
+			}
+			System.out.println("numberID\t" + numberID);
+			for(int q = tilesets.size() -1; q >= 0; q--) {
+				if(numberID > tilesets.get(q).getFirstgid()) {
+					ts = tilesets.get(q);
+				}
+			}
+//			for(TiledTileset ts : tilesets) {
+//				if( ts.getFirstgid() >)
+//			}
+			BufferedImage bI = new BufferedImage(tilelayers.get(i).getWidth() * ts.getTileWidth(), tilelayers.get(i).getHeight() * ts.getTileHeight(), BufferedImage.TYPE_INT_ARGB);
+			tilelayers.get(i).layerImage = bI;
+			g2 = bI.createGraphics();
+			ArrayList<Long> data = tilelayers.get(i).getData();
+			int lastPosition = 0;
+			for(int y = 0; y < tilelayers.get(i).getHeight(); y++) {
+				
+				for(int x = 0; x < tilelayers.get(i).getWidth(); x++) {
+					int number = data.get(lastPosition).intValue();
+					
+
+					g2.drawImage(tilesetTiles.get(number),x *  ts.getTileWidth(),y * ts.getTileHeight(), ts.getTileWidth(), ts.getTileHeight(), null);
+					lastPosition++;
+				}
 			}
 		}
-		return null;
 	}
 	
-	public ArrayList<BufferedImage> getTilesetTiles() {
-		return tilesetTiles;
+	public ArrayList<TiledLayer> getTiledLayers() {
+		return tilelayers;
 	}
 }

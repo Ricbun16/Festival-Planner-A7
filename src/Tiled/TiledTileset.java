@@ -24,13 +24,20 @@ public class TiledTileset {
 	private BufferedImage[] tilesetTiles;
 	private JSONObject tileset;
 	private int tilesAmount;
+	private String path;
 	
 	public TiledTileset(JSONObject tileset) {
+		path = "JSON/LPC Base Assets/tiles/";
+
 		try {
 			loadTileset(tileset);
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public TiledTileset(){
+		
 	}
 	
 	public void loadTileset(JSONObject tileSet) throws FileNotFoundException, IOException, ParseException {
@@ -46,7 +53,7 @@ public class TiledTileset {
 				tileHeight = ((Long) tileSet.get("tileheight")).intValue();
 				tileWidth = ((Long) tileSet.get("tilewidth")).intValue();
 				
-				bImage = ImageIO.read(new File(image));
+				bImage = ImageIO.read(new File(path + image));
 				tilesAmount = (imageHeight/tileHeight) * (imageWidth/tileWidth);
 				tilesetTiles = new BufferedImage[tilesAmount];
 				
