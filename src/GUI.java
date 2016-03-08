@@ -5,19 +5,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.AbstractTableModel;
 
 public class GUI extends JFrame {
@@ -25,9 +29,13 @@ public class GUI extends JFrame {
 	private Schedule schedule;
 	private JPanel westBorder;
 	private JPanel center;
+	private JPanel northNorth;
+	private JPanel northBorder;
 	private JTable table;
+	private JLabel nameLable;
 	private JButton addPerformance;
 	private JButton addStage;
+	private JMenuBar menubar;
 	private TableModel tableModel = new TableModel();
 	private ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	private ArrayList<Artist> artists = new ArrayList<Artist>();
@@ -39,6 +47,7 @@ public class GUI extends JFrame {
 	private JLabel titleLabel;
 	private int scheduleStart;
 	private int scheduleStop;
+	private String festivalName = "festival";
 
 	public static void main(String s[]) {
 		new GUI();
@@ -59,17 +68,19 @@ public class GUI extends JFrame {
 
 		JTextField field1 = new JTextField();
 		JTextField field2 = new JTextField();
+		JTextField field3 = new JTextField();
 
 		int hoursStart;
 		int hoursStop;
 
-		Object[] message = { "Start Uur", field1, "Eind Uur:", field2, };
+		Object[] message = { "Start Uur", field1, "Eind Uur:", field2, "Festival naam", field3};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
 				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 
 			hoursStart = Integer.parseInt(field1.getText());
 			hoursStop = Integer.parseInt(field2.getText());
+			festivalName = field3.getText();
 			if (hoursStart <= hoursStop && hoursStart < 25 && hoursStop < 25) {
 				scheduleStart = hoursStart;
 				scheduleStop = hoursStop;
@@ -77,15 +88,36 @@ public class GUI extends JFrame {
 				JOptionPane.showMessageDialog(null, "Geen geldige schedule tijd", "Error",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
-
-		}
+			nameLable.setText(festivalName+" - 16-02-2016");
+			repaint();
+		}	
 	}
 
 	private void makeFrame() {
 
 		JPanel content = new JPanel(new BorderLayout());
 		Border blackline = BorderFactory.createLineBorder(Color.black);
+		
+		menubar = new JMenuBar();
+		JMenu menu = new JMenu("Simulator");
+		JMenuItem menuItem = new JMenuItem("New Simulator");
 
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame frame = new JFrame("Simulator");
+				frame.setSize(640, 480);
+				frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				JPanel panel = new SimulatorGUI(schedule);
+				frame.setContentPane(panel);
+				frame.setVisible(true);
+				//JOptionPane.showMessageDialog(null, "Simulator", "Error",
+				//		JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		menubar.add(menu);
+		menu.add(menuItem);
+
+		
 		westBorder = new JPanel();
 		westBorder.setBorder(blackline);
 		westBorder.setLayout(new BoxLayout(westBorder, BoxLayout.Y_AXIS));
@@ -155,10 +187,13 @@ public class GUI extends JFrame {
 
 		content.add(eastBorder, BorderLayout.EAST);
 
-		JPanel northBorder = new JPanel(new FlowLayout());
-		JLabel naamLable = new JLabel("Festival Naam - 16-02-2016");
-		northBorder.setBorder(blackline);
-		northBorder.add(naamLable);
+		northBorder = new JPanel(new BorderLayout());
+		northNorth = new JPanel(new FlowLayout());
+		nameLable = new JLabel(festivalName+" - 16-02-2016");
+		northNorth.setBorder(blackline);
+		northNorth.add(nameLable);
+		northBorder.add(menubar,BorderLayout.NORTH);
+		northBorder.add(northNorth,BorderLayout.CENTER);
 		content.add(northBorder, BorderLayout.NORTH);
 
 		JPanel southBorder = new JPanel();
@@ -269,7 +304,6 @@ public class GUI extends JFrame {
 				popularity = Integer.parseInt(field4.getText());
 				if (popularity > 100)
 					popularity = 100;
-				
 
 				for (Artist currentArtist : artists) {
 					if (currentArtist.getName().equals(artistName)) {
@@ -277,11 +311,12 @@ public class GUI extends JFrame {
 						artistSet = true;
 					}
 				}
-				if (!schedule.checkDoubleBooking(artist, timeSlot, currentStage)|| !currentStage.getTimeSlot(timeSlot).getOccupied()) {
+				if (!schedule.checkDoubleBooking(artist, timeSlot, currentStage)
+						|| !currentStage.getTimeSlot(timeSlot).getOccupied()) {
 					if (artistSet) {
 
 						try {
-							currentStage.scheduleArtist(timeSlot, artist,popularity);
+							currentStage.scheduleArtist(timeSlot, artist, popularity);
 							fillTimeslots(currentStage);
 						}
 
@@ -291,7 +326,7 @@ public class GUI extends JFrame {
 						artist = new Artist(artistName, genre);
 						artists.add(artist);
 
-						currentStage.scheduleArtist(timeSlot, artist,popularity);
+						currentStage.scheduleArtist(timeSlot, artist, popularity);
 						fillTimeslots(currentStage);
 						schedule.setArtists(artists);
 					}
