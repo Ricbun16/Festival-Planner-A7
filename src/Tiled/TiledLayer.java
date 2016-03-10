@@ -17,7 +17,7 @@ import org.json.simple.parser.ParseException;
 
 public class TiledLayer {
 
-	ArrayList<Integer> data;
+	ArrayList<Long> data;
 	JSONObject layer;
 	JSONArray JSONData;
 	String name;
@@ -26,6 +26,7 @@ public class TiledLayer {
 	int x, y;
 	double opacity;
 	boolean visible;
+	BufferedImage layerImage;
 
 	public TiledLayer(JSONObject tilelayer) {
 		try {
@@ -40,6 +41,7 @@ public class TiledLayer {
 			// take all needed information from a tilelayer.
 			this.layer = layer;
 			JSONData = (JSONArray) layer.get("data");
+			
 			name = (String) layer.get("name");
 			type = (String) layer.get("type");
 			opacity = ((Long) layer.get("opacity")).doubleValue();
@@ -48,7 +50,8 @@ public class TiledLayer {
 			height = ((Long)layer.get("height")).intValue();
 			x = ((Long)layer.get("x")).intValue();
 			y = ((Long)layer.get("y")).intValue();
-			data = (ArrayList<Integer>) JSONData;
+			data = (ArrayList<Long>) JSONData;
+			System.out.println(data);
 //			System.out.println(opacity);
 //			System.out.println(JSONData);
 //			System.out.println(data);
@@ -58,7 +61,7 @@ public class TiledLayer {
 		}
 	}
 
-	public ArrayList<Integer> getData() {
+	public ArrayList<Long> getData() {
 		return data;
 	}
 
