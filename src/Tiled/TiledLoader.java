@@ -55,7 +55,8 @@ public class TiledLoader {
 			// get all tilelayers and put them in an arraylist.
 			JSONArray JSONLayers = (JSONArray)jObj.get("layers");
 			tilelayers = new ArrayList<TiledLayer>();
-			for(int i = 0; i < JSONLayers.size(); i++) {
+			for(int i = 0; i < JSONLayers.size()-1; i++) {
+				
 				tilelayers.add(new TiledLayer((JSONObject) JSONLayers.get(i)));
 			}
 
