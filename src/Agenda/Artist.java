@@ -1,3 +1,4 @@
+package Agenda;
 import java.io.Serializable;
 import java.util.*;
 //Class in which artist is named

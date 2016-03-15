@@ -1,3 +1,4 @@
+package Agenda;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -111,7 +112,7 @@ public class GUI extends JFrame {
 				JFrame simulatorFrame = new JFrame("Simulator");
 				simulatorFrame.setSize(1200,1000);
 				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				JPanel content = new Tiled.TiledMap();
+				JPanel content = new Tiled.TiledMap(schedule);
 				simulatorFrame.setContentPane(content);
 				simulatorFrame.setVisible(true);
 			}
