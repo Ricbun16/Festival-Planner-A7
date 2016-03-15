@@ -251,7 +251,7 @@
         {
          "columns":3,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/grass.png",
+         "image":"grass.png",
          "imageheight":192,
          "imagewidth":96,
          "margin":0,
@@ -264,7 +264,7 @@
         {
          "columns":3,
          "firstgid":19,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/cement.png",
+         "image":"cement.png",
          "imageheight":192,
          "imagewidth":96,
          "margin":0,
@@ -277,7 +277,7 @@
         {
          "columns":17,
          "firstgid":37,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/castle_outside.png",
+         "image":"castle_outside.png",
          "imageheight":352,
          "imagewidth":544,
          "margin":0,
@@ -290,7 +290,7 @@
         {
          "columns":10,
          "firstgid":224,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/castlefloors.png",
+         "image":"castlefloors.png",
          "imageheight":320,
          "imagewidth":320,
          "margin":0,
@@ -303,7 +303,7 @@
         {
          "columns":10,
          "firstgid":324,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/inside.png",
+         "image":"inside.png",
          "imageheight":320,
          "imagewidth":320,
          "margin":0,
@@ -316,7 +316,7 @@
         {
          "columns":9,
          "firstgid":424,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/house.png",
+         "image":"house.png",
          "imageheight":224,
          "imagewidth":288,
          "margin":0,
@@ -329,7 +329,7 @@
         {
          "columns":2,
          "firstgid":487,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/kitchen.png",
+         "image":"kitchen.png",
          "imageheight":128,
          "imagewidth":64,
          "margin":0,
@@ -342,7 +342,7 @@
         {
          "columns":11,
          "firstgid":495,
-         "image":"..\/..\/..\/..\/..\/Downloads\/LPC Base Assets\/LPC Base Assets\/tiles\/victoria.png",
+         "image":"victoria.png",
          "imageheight":160,
          "imagewidth":352,
          "margin":0,
