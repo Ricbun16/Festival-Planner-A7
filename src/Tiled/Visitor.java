@@ -22,7 +22,7 @@ public class Visitor{
 		sprite = new ImageIcon("visitor.png").getImage();
 		direction = Math.random() * Math.PI*2;
 		
-		target = new Point2D.Double(250, 750);
+		target = new Point2D.Double(250, 7500);
 	}
 
 	public void draw(Graphics2D g2d) {

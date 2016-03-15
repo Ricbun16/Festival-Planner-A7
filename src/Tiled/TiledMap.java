@@ -1,5 +1,4 @@
 package Tiled;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,10 +12,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.Timer;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import Agenda.Schedule;
+import Agenda.TimeSlot;
 
 public class TiledMap  extends JPanel implements ActionListener{
 	TiledLoader tLoader;
@@ -25,6 +27,9 @@ public class TiledMap  extends JPanel implements ActionListener{
 	int newX, newY;
 	private Point mousePoint;
 	private ArrayList<Visitor> visitors;
+	private Schedule schedule;
+	private ArrayList<TimeSlot> currentTimeSlots;
+	private int currentTime;
 	
 	File file = new File("JSON/event.json");
 	
@@ -32,17 +37,20 @@ public class TiledMap  extends JPanel implements ActionListener{
 		JFrame frame = new JFrame("Simulator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel panel = new TiledMap();
+		JPanel panel = new TiledMap(new Schedule());
 		frame.setContentPane(panel);
 		frame.setSize(840, 480);
 		frame.setVisible(true);
 	}
-	
-	public TiledMap(){
+
+	public TiledMap(Schedule schedule){
 		cameraTransform = new AffineTransform();
 		tLoader = new TiledLoader(file);
 		tLoader.createLayers();
 		visitors = new ArrayList<Visitor>();
+		this.schedule = schedule;
+		currentTimeSlots = new ArrayList<TimeSlot>();
+		currentTime = schedule.getScheduleStartTime()*100;
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me){
@@ -87,6 +95,59 @@ public class TiledMap  extends JPanel implements ActionListener{
 		}
 		
 		new Timer(1, this).start();
+		
+		switchTimeslot();
+		
+	}
+	
+	public void switchTimeslot(){
+		
+		currentTimeSlots.clear();
+		for(int x = 0; x < schedule.getStages().size(); x++){
+			TimeSlot current = schedule.getStages().get(x).getTimeSlots().get(1);
+			System.out.println(current.getTimeSlotStart());
+			if(current.getTimeSlotStart()==currentTime){
+				if(current.getOccupied())
+					currentTimeSlots.add(current);
+			schedule.getStages().get(x).getTimeSlots().remove(0);
+			}
+		}
+		
+		int totalPop = 0;
+		ArrayList<Integer> pop = new ArrayList<Integer>();
+		if(currentTimeSlots != null){
+			for(int y = 0; y < currentTimeSlots.size(); y++){
+				totalPop += currentTimeSlots.get(y).getPopularity();
+				pop.add(currentTimeSlots.get(y).getPopularity());
+			}
+		}
+		
+		for(int i = 0; i < visitors.size(); i++){
+			int random = (int)(Math.random() * totalPop + 1), count = 0;
+			for(int ii = 0; ii < pop.size(); ii++){
+				if((random > count)&&(random < (count + pop.get(ii)))){
+					switch(currentTimeSlots.get(ii).getStageName()){
+						case "Stage 1": visitors.get(i).setTarget(new Point(250,750));
+						System.out.println("hoi");
+							break;
+							
+						case "Stage 2": visitors.get(i).setTarget(new Point(500,1200));
+							break;
+							
+							default:  visitors.get(i).setTarget(new Point(5000,1200));
+							break;
+					}
+				}
+				count += pop.get(ii);
+			}
+		}
+		
+		currentTime+=30;
+		String time = currentTime+"";
+		String subTime = time.substring(time.length()-2,time.length());
+		if(Integer.parseInt(time.substring(time.length()-2,time.length()))>=60){
+			currentTime+=40;
+		}
 		
 	}
 	
