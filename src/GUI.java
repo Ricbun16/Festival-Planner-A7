@@ -5,13 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -85,7 +87,28 @@ public class GUI extends JFrame {
 
 		JPanel content = new JPanel(new BorderLayout());
 		Border blackline = BorderFactory.createLineBorder(Color.black);
-
+		
+		JMenuBar menubar = new JMenuBar();
+		JMenu menu = new JMenu("Simulator");
+		JMenuItem menuItem = new JMenuItem("New Simulator");
+		
+		
+		
+		menubar.add(menu);
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener(){
+	
+			public void actionPerformed(ActionEvent e) {
+				JFrame simulatorFrame = new JFrame("Simulator");
+				simulatorFrame.setSize(640, 480);
+				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				JPanel content = new SimulatorPanel(schedule);
+				simulatorFrame.setContentPane(content);
+				simulatorFrame.setVisible(true);
+			}			
+		});
+		
+		
 		westBorder = new JPanel();
 		westBorder.setBorder(blackline);
 		westBorder.setLayout(new BoxLayout(westBorder, BoxLayout.Y_AXIS));
@@ -155,10 +178,13 @@ public class GUI extends JFrame {
 
 		content.add(eastBorder, BorderLayout.EAST);
 
-		JPanel northBorder = new JPanel(new FlowLayout());
+		JPanel northBorder = new JPanel(new BorderLayout());
+		JPanel northNorth = new JPanel(new FlowLayout());
 		JLabel naamLable = new JLabel("Festival Naam - 16-02-2016");
-		northBorder.setBorder(blackline);
-		northBorder.add(naamLable);
+		northNorth.setBorder(blackline);
+		northNorth.add(naamLable);
+		northBorder.add(northNorth, BorderLayout.CENTER);
+		northBorder.add(menubar,BorderLayout.NORTH);
 		content.add(northBorder, BorderLayout.NORTH);
 
 		JPanel southBorder = new JPanel();
