@@ -4,8 +4,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -22,8 +23,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
-
-import Tiled.TiledMap;
 
 public class GUI extends JFrame {
 
@@ -44,6 +43,9 @@ public class GUI extends JFrame {
 	private JLabel titleLabel;
 	private int scheduleStart;
 	private int scheduleStop;
+	private String scheduleName = "Festival";
+	private JLabel nameLabel ;
+	private String date;
 
 	public static void main(String s[]) {
 		new GUI();
@@ -53,6 +55,7 @@ public class GUI extends JFrame {
 		super("Agenda");
 		setSize(1000, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 		makeFrame();
 		getScheduleTime();
 		schedule = new Schedule(scheduleStart, scheduleStop);
@@ -64,26 +67,33 @@ public class GUI extends JFrame {
 
 		JTextField field1 = new JTextField();
 		JTextField field2 = new JTextField();
+		JTextField field3 = new JTextField();
 
 		int hoursStart;
 		int hoursStop;
+		String name;
 
-		Object[] message = { "Start Uur", field1, "Eind Uur:", field2, };
+		Object[] message = { "Start Uur", field1, "Eind Uur:", field2, "Festival naam", field3};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
 				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 
 			hoursStart = Integer.parseInt(field1.getText());
 			hoursStop = Integer.parseInt(field2.getText());
+			name = field3.getText();
 			if (hoursStart <= hoursStop && hoursStart < 25 && hoursStop < 25) {
 				scheduleStart = hoursStart;
 				scheduleStop = hoursStop;
+				scheduleName = name;
+				nameLabel.setText(scheduleName+" - "+date);
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "Geen geldige schedule tijd", "Error",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 
 		}
+		repaint();
 	}
 
 	private void makeFrame() {
@@ -97,9 +107,9 @@ public class GUI extends JFrame {
 
 		JPanel northBorder = new JPanel(new BorderLayout());
 		JPanel northNorth = new JPanel(new FlowLayout());
-		JLabel naamLable = new JLabel("Festival Naam - 16-02-2016");
+		nameLabel = new JLabel(scheduleName+" - "+date);
 		northNorth.setBorder(blackline);
-		northNorth.add(naamLable);
+		northNorth.add(nameLabel);
 		northBorder.add(northNorth, BorderLayout.CENTER);
 		northBorder.add(menubar, BorderLayout.NORTH);
 		content.add(northBorder, BorderLayout.NORTH);
@@ -216,11 +226,8 @@ public class GUI extends JFrame {
 	public void addStagePopUp() {
 
 		JTextField field1 = new JTextField();
-		JTextField field2 = new JTextField();
 		JTextField field3 = new JTextField();
-		JTextField field4 = new JTextField();
 		JTextField field5 = new JTextField();
-		JTextField field6 = new JTextField();
 
 		int hoursStart;
 		int hoursStop;
@@ -229,18 +236,17 @@ public class GUI extends JFrame {
 		int timeSlotLength;
 		String stageName;
 
-		Object[] message = { "BeginTijd", field1, ":", field2, "eindtijd", field3, ":", field4, "Naam", field5,
-				"TimeSlot Length :", field6 };
+		Object[] message = { "BeginTijd", field1, "eindtijd", field3, "Naam", field5};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
 				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 
 			hoursStart = Integer.parseInt(field1.getText());
-			minuteStart = Integer.parseInt(field2.getText());
+			minuteStart = 00;
 			hoursStop = Integer.parseInt(field3.getText());
-			minuteStop = Integer.parseInt(field4.getText());
+			minuteStop = 0;
 			stageName = (String) field5.getText();
-			timeSlotLength = Integer.parseInt(field6.getText());
+			timeSlotLength = 30;
 			if (minuteStart >= 60) {
 				minuteStart -= 60;
 				hoursStart += 1;
