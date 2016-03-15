@@ -1,6 +1,5 @@
 package Tiled;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,6 +20,7 @@ public class TiledLoader {
 	private ArrayList<BufferedImage> tilesetTiles;
 	private ArrayList<TiledObject> targets;
 	private Graphics2D g2;
+	private TiledLayer collisionLayer;
 
 	
 	public TiledLoader(){
@@ -102,6 +100,10 @@ public class TiledLoader {
 				
 		}
 		
+	}
+	
+	public TiledLayer getColLayer(){
+		return collisionLayer;
 	}
 	
 	public void createLayers() {

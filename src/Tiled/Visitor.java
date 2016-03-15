@@ -68,6 +68,8 @@ public class Visitor{
 				isCollision = true;
 				break;
 			}
+			TiledLoader loader = new TiledLoader();
+			if(b.location.equals(loader.getColLayer()));
 		}
 		
 		if(!isCollision)
