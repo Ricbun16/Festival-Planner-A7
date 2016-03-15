@@ -12,6 +12,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,6 +22,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
+
+import Tiled.TiledMap;
 
 public class GUI extends JFrame {
 
@@ -85,6 +90,34 @@ public class GUI extends JFrame {
 
 		JPanel content = new JPanel(new BorderLayout());
 		Border blackline = BorderFactory.createLineBorder(Color.black);
+		
+		JMenuBar menubar = new JMenuBar();
+		JMenu menu = new JMenu("Simulator");
+		JMenuItem menuItem = new JMenuItem("New Simulator");
+
+		JPanel northBorder = new JPanel(new BorderLayout());
+		JPanel northNorth = new JPanel(new FlowLayout());
+		JLabel naamLable = new JLabel("Festival Naam - 16-02-2016");
+		northNorth.setBorder(blackline);
+		northNorth.add(naamLable);
+		northBorder.add(northNorth, BorderLayout.CENTER);
+		northBorder.add(menubar, BorderLayout.NORTH);
+		content.add(northBorder, BorderLayout.NORTH);
+		
+		menubar.add(menu);
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JFrame simulatorFrame = new JFrame("Simulator");
+				simulatorFrame.setSize(1200,1000);
+				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				JPanel content = new Tiled.TiledMap();
+				simulatorFrame.setContentPane(content);
+				simulatorFrame.setVisible(true);
+			}
+			
+			
+		});
 
 		westBorder = new JPanel();
 		westBorder.setBorder(blackline);
@@ -155,12 +188,7 @@ public class GUI extends JFrame {
 
 		content.add(eastBorder, BorderLayout.EAST);
 
-		JPanel northBorder = new JPanel(new FlowLayout());
-		JLabel naamLable = new JLabel("Festival Naam - 16-02-2016");
-		northBorder.setBorder(blackline);
-		northBorder.add(naamLable);
-		content.add(northBorder, BorderLayout.NORTH);
-
+		
 		JPanel southBorder = new JPanel();
 		southBorder.setBorder(blackline);
 		southBorder.add(new JLabel(" "));
