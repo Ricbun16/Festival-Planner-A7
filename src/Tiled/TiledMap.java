@@ -128,14 +128,19 @@ public class TiledMap  extends JPanel implements ActionListener{
 				if((random > count)&&(random < (count + pop.get(ii)))){
 					switch(currentTimeSlots.get(ii).getStageName()){
 						case "Stage 1": visitors.get(i).setTarget(new Point(250,750));
-						System.out.println("hoi");
 							break;
 							
-						case "Stage 2": visitors.get(i).setTarget(new Point(500,1200));
+						case "Stage 2": visitors.get(i).setTarget(new Point(800,1350));
 							break;
+						case "Stage 3": visitors.get(i).setTarget(new Point(800,250));
+						break;
+						case "Stage 4": visitors.get(i).setTarget(new Point(1400,530));
+						break;
+						case "Stage 5": visitors.get(i).setTarget(new Point(1400,1050));
+						break;
 							
-							default:  visitors.get(i).setTarget(new Point(5000,1200));
-							break;
+						default:  visitors.get(i).setTarget(new Point(5000,1200));
+						break;
 					}
 				}
 				count += pop.get(ii);
