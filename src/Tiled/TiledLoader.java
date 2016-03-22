@@ -1,6 +1,5 @@
 package Tiled;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,7 +18,9 @@ public class TiledLoader {
 	private ArrayList<TiledTileset> tilesets;
 	private ArrayList<TiledLayer> tilelayers;
 	private ArrayList<BufferedImage> tilesetTiles;
+	private ArrayList<TiledObject> targets;
 	private Graphics2D g2;
+	private TiledLayer collisionLayer;
 
 	
 	public TiledLoader(){
@@ -55,9 +54,23 @@ public class TiledLoader {
 			// get all tilelayers and put them in an arraylist.
 			JSONArray JSONLayers = (JSONArray)jObj.get("layers");
 			tilelayers = new ArrayList<TiledLayer>();
-			for(int i = 0; i < JSONLayers.size()-1; i++) {
-				
-				tilelayers.add(new TiledLayer((JSONObject) JSONLayers.get(i)));
+			for(int i = 0; i < JSONLayers.size(); i++) {
+				JSONObject jLayer = (JSONObject) JSONLayers.get(i);
+				if(jLayer.get("type").equals("tilelayer"))
+				{
+					tilelayers.add(new TiledLayer(jLayer));
+					if(tilelayers.get(i).getName().equals("Colission"))
+						collisionLayer = tilelayers.get(i);
+				}
+				else
+				{
+					// Get the targets and adds them to an ArrayList
+					JSONArray JSONObjects = (JSONArray) jLayer.get("objects");
+					targets = new ArrayList<TiledObject>();
+					for(int ii = 0; ii< JSONObjects.size(); ii++){
+						targets.add(new TiledObject((JSONObject) JSONObjects.get(ii)));
+					}
+				}
 			}
 
 			// get all the tilesets
@@ -87,6 +100,10 @@ public class TiledLoader {
 				
 		}
 		
+	}
+	
+	public TiledLayer getColLayer(){
+		return collisionLayer;
 	}
 	
 	public void createLayers() {

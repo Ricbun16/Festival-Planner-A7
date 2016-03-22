@@ -5,6 +5,7 @@
 /GUI$5.class
 /GUI$6.class
 /GUI$7.class
+<<<<<<< HEAD
 /Artist.class
 /GUI$1.class
 /GUI$ButtonListener.class
@@ -15,3 +16,9 @@
 /StagePopUp$1.class
 /StagePopUp.class
 /TimeSlot.class
+=======
+/org/
+/Visitor.class
+/Agenda/
+/.DS_Store
+>>>>>>> master
