@@ -85,9 +85,14 @@ public class Visitor{
 		return location;
 	} 
 
-	public void setTarget(Point point) {
+	public void setTarget(Point2D point) {
 		this.target = point;		
 	}
+	
+	public Point2D getTarget()
+	{
+		return target;
+	} 
 
 
 }

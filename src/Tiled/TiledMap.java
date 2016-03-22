@@ -13,7 +13,6 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -24,6 +23,8 @@ public class TiledMap  extends JPanel implements ActionListener{
 	TiledLoader tLoader;
 	AffineTransform cameraTransform;
 	int oldX, oldY;
+	private int tick = 0;
+	private int seconds = 0;
 	int newX, newY;
 	private Point mousePoint;
 	private ArrayList<Visitor> visitors;
@@ -33,15 +34,15 @@ public class TiledMap  extends JPanel implements ActionListener{
 	
 	File file = new File("JSON/event.json");
 	
-	public static void main(String[] args){
-		JFrame frame = new JFrame("Simulator");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panel = new TiledMap(new Schedule());
-		frame.setContentPane(panel);
-		frame.setSize(840, 480);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args){
+//		JFrame frame = new JFrame("Simulator");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		
+//		JPanel panel = new TiledMap(new Schedule());
+//		frame.setContentPane(panel);
+//		frame.setSize(840, 480);
+//		frame.setVisible(true);
+//	}
 
 	public TiledMap(Schedule schedule){
 		cameraTransform = new AffineTransform();
@@ -61,7 +62,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}
 		});
 		
-		addMouseMotionListener(new MouseMotionAdapter(){
+		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent md){
 				newX = md.getX();
 				newY = md.getY();
@@ -96,11 +97,20 @@ public class TiledMap  extends JPanel implements ActionListener{
 		
 		new Timer(1, this).start();
 		
-		switchTimeslot();
+		switchTimeslot(0);
 		
 	}
 	
-	public void switchTimeslot(){
+	public void switchTimeslot(int vooruit){
+		
+		if(vooruit == 1)
+			currentTime+=30;
+		
+		if(vooruit == 2)
+			currentTime-=30;
+
+		if(currentTime%100>=60)
+			currentTime+=40;
 		
 		currentTimeSlots.clear();
 		for(int x = 0; x < schedule.getStages().size(); x++){
@@ -128,30 +138,20 @@ public class TiledMap  extends JPanel implements ActionListener{
 				if((random > count)&&(random < (count + pop.get(ii)))){
 					switch(currentTimeSlots.get(ii).getStageName()){
 						case "Stage 1": visitors.get(i).setTarget(new Point(250,750));
-							break;
-							
+						break;
 						case "Stage 2": visitors.get(i).setTarget(new Point(800,1350));
-							break;
+						break;
 						case "Stage 3": visitors.get(i).setTarget(new Point(800,250));
 						break;
 						case "Stage 4": visitors.get(i).setTarget(new Point(1400,530));
 						break;
 						case "Stage 5": visitors.get(i).setTarget(new Point(1400,1050));
 						break;
-							
-						default:  visitors.get(i).setTarget(new Point(5000,1200));
-						break;
+
 					}
 				}
 				count += pop.get(ii);
 			}
-		}
-		
-		currentTime+=30;
-		String time = currentTime+"";
-		String subTime = time.substring(time.length()-2,time.length());
-		if(Integer.parseInt(time.substring(time.length()-2,time.length()))>=60){
-			currentTime+=40;
 		}
 		
 	}
@@ -171,8 +171,29 @@ public class TiledMap  extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
+		
 		for(Visitor b : visitors)
 			b.update(visitors);
+		
+		if(tick < 50)
+			tick++;
+		else {
+			tick = 0;
+			System.out.println(visitors.size());
+			if(seconds > 3){
+				new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(900,900));
+				new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(20,20));
+			}
+		
+			if (seconds > 30){
+				seconds = 0;
+				for(int i = 0 ; i < 50; i++)
+					new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(20,20));
+					new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(900,900));
+				switchTimeslot(1);
+			} else
+				seconds++;
+		}
 
 		repaint();
 	}
