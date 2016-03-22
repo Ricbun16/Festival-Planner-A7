@@ -61,7 +61,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}
 		});
 		
-		addMouseMotionListener(new MouseMotionAdapter() {
+		addMouseMotionListener(new MouseMotionAdapter(){
 			public void mouseDragged(MouseEvent md){
 				newX = md.getX();
 				newY = md.getY();
