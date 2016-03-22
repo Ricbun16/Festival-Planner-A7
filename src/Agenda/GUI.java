@@ -120,11 +120,14 @@ public class GUI extends JFrame {
 		menuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JFrame simulatorFrame = new JFrame("Simulator");
-				simulatorFrame.setSize(1200,1000);
+				simulatorFrame.setSize(700,700);
 				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				JPanel content = new Tiled.TiledMap(schedule);
+			//	content.setBackground(Color.black);
 				simulatorFrame.setContentPane(content);
+				simulatorFrame.setResizable(false);
 				simulatorFrame.setVisible(true);
+				simulatorFrame.setBackground(Color.black);
 			}
 			
 			

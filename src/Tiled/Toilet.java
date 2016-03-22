@@ -21,7 +21,7 @@ public class Toilet implements ActionListener {
 	public boolean onPlace()
 	{
 	
-		if(visitor.getLocation().distance(toiletLocation) <= 100  ){
+		if(visitor.getLocation().distance(toiletLocation) <= 120  ){
 		return true;
 		}
 		else {

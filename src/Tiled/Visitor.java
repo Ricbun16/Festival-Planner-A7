@@ -63,7 +63,7 @@ public class Visitor{
 		{
 			if(b == this)
 				continue;
-			if(b.location.distance(newLocation) < 18)
+			if(b.location.distance(newLocation) < 19)
 			{
 				isCollision = true;
 				break;
