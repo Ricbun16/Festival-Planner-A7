@@ -33,7 +33,6 @@ public class Toilet implements ActionListener {
 			oldPoint = visitor.getTarget();
 		if(onPlace())
 			visitor.setTarget(oldPoint);
-		
 	}
 
 }

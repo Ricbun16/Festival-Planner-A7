@@ -132,5 +132,7 @@ public class Visitor{
 		this.target = target;
 	}
 
-
+	public Point2D getTarget(){
+		return pointTarget;
+	}
 }
