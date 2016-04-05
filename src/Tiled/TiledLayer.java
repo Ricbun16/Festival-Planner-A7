@@ -53,7 +53,7 @@ public class TiledLayer {
 			x = ((Long)layer.get("x")).intValue();
 			y = ((Long)layer.get("y")).intValue();
 			data = (ArrayList<Long>) JSONData;
-			data2D = new Long[(int) Math.sqrt(data.size())][(int) Math.sqrt(data.size())];
+			data2D = new Long[width][height]; //(int) Math.sqrt(data.size())
 //			System.out.println(data);
 //			System.out.println(opacity);
 //			System.out.println(JSONData);

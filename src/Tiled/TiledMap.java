@@ -25,6 +25,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 	AffineTransform cameraTransform;
 	int oldX, oldY;
 	int newX, newY;
+	int aantalVisitors = 100;
 	private Point mousePoint;
 	private ArrayList<Visitor> visitors;
 	private Schedule schedule;
@@ -83,15 +84,15 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}	
 		});
 		
-		for(int i = 0; i < 1; i++)
+		for(int i = 0; i < aantalVisitors; i++)
 		{
 			
-			Point2D position = new Point2D.Double(60,1600);
+			Point2D position = new Point2D.Double(70,1800);
 			while(!canSpawn(position)){
 				if(position.getX()<240){
 				
-				position = new Point2D.Double(position.getX()+20, position.getY());}
-				else{position = new Point2D.Double(50, position.getY()+20);}
+				position = new Point2D.Double(position.getX()+50, position.getY());}
+				else{position = new Point2D.Double(70, position.getY()+50);}
 			}
 			visitors.add(new Visitor(position));
 		}
@@ -126,7 +127,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 		
 		for(int i = 0; i < visitors.size(); i++){
 			
-			visitors.get(i).setTarget(targets.get(0));
+			visitors.get(i).setTarget(targets.get(1));
 			
 			
 			int random = (int)(Math.random() * totalPop + 1), count = 0;
@@ -176,7 +177,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent arg0) {
 		for(Visitor b : visitors)
-			b.update(visitors);
+			b.update(visitors, tLoader.getColLayer());
 
 		repaint();
 	}
