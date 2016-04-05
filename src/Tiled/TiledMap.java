@@ -30,18 +30,19 @@ public class TiledMap  extends JPanel implements ActionListener{
 	private Schedule schedule;
 	private ArrayList<TimeSlot> currentTimeSlots;
 	private int currentTime;
+	private ArrayList<Target> targets;
 	
 	File file = new File("JSON/event.json");
 	
-	public static void main(String[] args){
-		JFrame frame = new JFrame("Simulator");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panel = new TiledMap(new Schedule());
-		frame.setContentPane(panel);
-		frame.setSize(840, 480);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args){
+//		JFrame frame = new JFrame("Simulator");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		
+//		JPanel panel = new TiledMap(new Schedule());
+//		frame.setContentPane(panel);
+//		frame.setSize(840, 480);
+//		frame.setVisible(true);
+//	}
 
 	public TiledMap(Schedule schedule){
 		cameraTransform = new AffineTransform();
@@ -51,6 +52,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 		this.schedule = schedule;
 		currentTimeSlots = new ArrayList<TimeSlot>();
 		currentTime = schedule.getScheduleStartTime()*100;
+		targets = tLoader.getTargets();
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me){
@@ -81,7 +83,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}	
 		});
 		
-		for(int i = 0; i < 500; i++)
+		for(int i = 0; i < 1; i++)
 		{
 			
 			Point2D position = new Point2D.Double(60,1600);
@@ -123,23 +125,27 @@ public class TiledMap  extends JPanel implements ActionListener{
 		}
 		
 		for(int i = 0; i < visitors.size(); i++){
+			
+			visitors.get(i).setTarget(targets.get(0));
+			
+			
 			int random = (int)(Math.random() * totalPop + 1), count = 0;
 			for(int ii = 0; ii < pop.size(); ii++){
 				if((random > count)&&(random < (count + pop.get(ii)))){
 					switch(currentTimeSlots.get(ii).getStageName()){
-						case "Stage 1": visitors.get(i).setTarget(new Point(250,750));
+						case "Stage 1": visitors.get(i).setTarget(targets.get(0));
 							break;
 							
-						case "Stage 2": visitors.get(i).setTarget(new Point(800,1350));
+						case "Stage 2": visitors.get(i).setTarget(targets.get(1));
 							break;
-						case "Stage 3": visitors.get(i).setTarget(new Point(800,250));
+						case "Stage 3": visitors.get(i).setTarget(targets.get(2));
 						break;
-						case "Stage 4": visitors.get(i).setTarget(new Point(1400,530));
+						case "Stage 4": visitors.get(i).setTarget(targets.get(3));
 						break;
-						case "Stage 5": visitors.get(i).setTarget(new Point(1400,1050));
+						case "Stage 5": visitors.get(i).setTarget(targets.get(4));
 						break;
 							
-						default:  visitors.get(i).setTarget(new Point(5000,1200));
+						default:  visitors.get(i).setPointTarget(new Point(5000,1200));
 						break;
 					}
 				}
@@ -148,9 +154,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 		}
 		
 		currentTime+=30;
-		String time = currentTime+"";
-		String subTime = time.substring(time.length()-2,time.length());
-		if(Integer.parseInt(time.substring(time.length()-2,time.length()))>=60){
+		if(currentTime%100>60){
 			currentTime+=40;
 		}
 		

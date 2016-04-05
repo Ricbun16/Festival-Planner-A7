@@ -1,6 +1,7 @@
 package Tiled;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +19,8 @@ public class TiledLoader {
 	private ArrayList<TiledTileset> tilesets;
 	private ArrayList<TiledLayer> tilelayers;
 	private ArrayList<BufferedImage> tilesetTiles;
-	private ArrayList<TiledObject> targets;
+	private ArrayList<TiledObject> objectTargets;
+	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Graphics2D g2;
 	private TiledLayer collisionLayer;
 
@@ -66,9 +68,9 @@ public class TiledLoader {
 				{
 					// Get the targets and adds them to an ArrayList
 					JSONArray JSONObjects = (JSONArray) jLayer.get("objects");
-					targets = new ArrayList<TiledObject>();
+					objectTargets = new ArrayList<TiledObject>();
 					for(int ii = 0; ii< JSONObjects.size(); ii++){
-						targets.add(new TiledObject((JSONObject) JSONObjects.get(ii)));
+						objectTargets.add(new TiledObject((JSONObject) JSONObjects.get(ii)));
 					}
 				}
 			}
@@ -108,8 +110,8 @@ public class TiledLoader {
 	
 	public void createLayers() {
 		for(int i = 0; i < tilelayers.size(); i++) {
-			System.out.println(tilelayers.size());
-			System.out.println(tilesets.size());
+//			System.out.println(tilelayers.size());
+//			System.out.println(tilesets.size());
 			long numberID = 0;
 			TiledTileset ts = new TiledTileset();
 			for(TiledLayer tl : tilelayers) {
@@ -118,7 +120,7 @@ public class TiledLoader {
 						numberID = idnumber;
 				}
 			}
-			System.out.println("numberID\t" + numberID);
+//			System.out.println("numberID\t" + numberID);
 			for(int q = tilesets.size() -1; q >= 0; q--) {
 				if(numberID > tilesets.get(q).getFirstgid()) {
 					ts = tilesets.get(q);
@@ -143,9 +145,23 @@ public class TiledLoader {
 				}
 			}
 		}
+		createTargets();
+	}
+	
+	public void createTargets() {
+
+		for(TiledObject temp : objectTargets) {
+			Target tempTarget =  new Target(temp);
+			tempTarget.build(collisionLayer);
+			targets.add(tempTarget);
+		}
 	}
 	
 	public ArrayList<TiledLayer> getTiledLayers() {
 		return tilelayers;
+	}
+	
+	public ArrayList<Target> getTargets() {
+		return targets;
 	}
 }

@@ -14,7 +14,8 @@ public class Visitor{
 	private Image sprite;
 	private double direction;
 
-	private Point2D target;
+	private Point2D pointTarget;
+	private Target target;
 
 	public Visitor(Point2D location)
 	{
@@ -22,7 +23,7 @@ public class Visitor{
 		sprite = new ImageIcon("visitor.png").getImage();
 		direction = Math.random() * Math.PI*2;
 		
-		target = new Point2D.Double(250, 7500);
+		pointTarget = new Point2D.Double(250, 0);
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -36,8 +37,41 @@ public class Visitor{
 	}
 
 	public void update(ArrayList<Visitor> visitors) {
-		double dx = target.getX() - location.getX();
-		double dy = target.getY() - location.getY();
+		if(target != null){
+//			System.out.println(target.getX());
+//			System.out.println(target.getY());
+//			System.out.println(location.getX());
+//			System.out.println(location.getY());
+		if(isAtTarget()){
+		//	System.out.println(1);
+		
+		}else{
+		
+			int tileX = (int) Math.floor(location.getX() / 32);
+//			System.out.println(location.getX());
+//			System.out.println(location.getX() / 32);
+//			System.out.println(Math.floor(location.getX() / 32));
+			int tileY = (int) Math.floor(location.getY() / 32);
+//			System.out.println(location.getY());
+//			System.out.println(location.getY() / 32);
+//			System.out.println(Math.floor(location.getY() / 32));
+//			if(tileX>49){
+//				tileX=49;
+//			}if(tileY>49){
+//				tileY=49;
+//			}
+//			if(tileX < 0) 
+//				tileX = 0;
+//			if(tileY < 0) 
+//				tileY = 0;
+			Point newPoint = target.getNextPoint(tileX, tileY);	
+			pointTarget =(Point2D) new Point(newPoint.x*32,newPoint.y*32);
+		}
+		}
+//		System.out.println(pointTarget.getX());
+//		System.out.println(pointTarget.getY());
+		double dx = pointTarget.getX() - location.getX();
+		double dy = pointTarget.getY() - location.getY();
 		double newDirection = Math.atan2(dy, dx);
 		
 		//direction = newDirection;
@@ -80,13 +114,31 @@ public class Visitor{
 		}
 		
 	}
+	
+	public boolean isAtTarget(){
+		try{
+		if(target.getValue(((int)location.getX()/32)-1,((int)location.getY()/32)-1)<3){
+			//System.out.println(target.getValue(((int)location.getX()/32)-1,((int)location.getY()/32)-1));
+			return true;
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+			//System.out.println(false);
+			return false;
+	}
+	
 	public Point2D getLocation()
 	{
 		return location;
 	} 
 
-	public void setTarget(Point point) {
-		this.target = point;		
+	public void setPointTarget(Point point) {
+		this.pointTarget = point;		
+	}
+	
+	public void setTarget(Target target){
+		this.target = target;
 	}
 
 

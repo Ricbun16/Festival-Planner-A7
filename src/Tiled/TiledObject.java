@@ -9,12 +9,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 public class TiledObject {
-	JSONObject object;
-	int width, height;
-	int x, y;
-	int id, rotation;
-	String name;
-	boolean visible;
+	private JSONObject object;
+	private int width, height;
+	private int x, y;
+	private int id, rotation;
+	private String name;
+	private boolean visible;
 	
 	public TiledObject(JSONObject TiledObject)
 	{
@@ -34,6 +34,7 @@ public class TiledObject {
 			visible = (boolean) object.get("visible");
 			width = ((Long)object.get("width")).intValue();
 			height = ((Long)object.get("height")).intValue();
+			id = ((Long)object.get("id")).intValue();
 			x = ((Long)object.get("x")).intValue();
 			y = ((Long)object.get("y")).intValue();
 		}
@@ -52,6 +53,10 @@ public class TiledObject {
 
 	public int getHeight() {
 		return height;
+	}
+	
+	public int getID() {
+		return id;
 	}
 
 	public int getX() {
