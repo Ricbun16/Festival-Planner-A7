@@ -10,19 +10,20 @@ import javax.swing.ImageIcon;
 
 public class Visitor{
 	private Point2D location;
-	private double speed = 5;
+	private double speed ;
 	private Image sprite;
 	private double direction;
 
-	private Point2D target;
+	private Point2D pointTarget;
+	private Target target;
 
 	public Visitor(Point2D location)
 	{
 		this.location = location;
 		sprite = new ImageIcon("visitor.png").getImage();
 		direction = Math.random() * Math.PI*2;
-		
-		target = new Point2D.Double(250, 7500);
+		speed = Math.random() * 10 +2;
+		pointTarget = new Point2D.Double(250, 0);
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -35,9 +36,30 @@ public class Visitor{
 		
 	}
 
-	public void update(ArrayList<Visitor> visitors) {
-		double dx = target.getX() - location.getX();
-		double dy = target.getY() - location.getY();
+	public void update(ArrayList<Visitor> visitors, TiledLayer collisionLayer) {
+
+		if(target != null){
+		if(isAtTarget()){
+		}
+		else{
+			int tileX = (int) Math.floor(location.getX() / 32);
+			int tileY = (int) Math.floor(location.getY() / 32);
+//			if(tileX>49)
+//				tileX = 49;
+//			if(tileY>49)
+//				tileY = 49;
+//			if(tileX < 0) 
+//				tileX = 0;
+//			if(tileY < 0) 
+//				tileY = 0;
+			Point newPoint = target.getNextPoint(tileX, tileY);	
+			pointTarget =(Point2D) new Point((newPoint.x*32)+16,(newPoint.y*32)+16);
+		}
+		}
+//		System.out.println("target x"+ pointTarget.getX());
+//		System.out.println("target y "+ pointTarget.getY());
+		double dx = pointTarget.getX() - location.getX();
+		double dy = pointTarget.getY() - location.getY();
 		double newDirection = Math.atan2(dy, dx);
 		
 		//direction = newDirection;
@@ -48,9 +70,9 @@ public class Visitor{
 			deltaDirection += 2 * Math.PI;
 		
 		if(deltaDirection < 0)
-			direction -= 0.1;
+			direction -= 0.5;
 		if(deltaDirection > 0)
-			direction += 0.1;
+			direction += 0.5;
 			
 		
 		Point2D newLocation = new Point2D.Double(
@@ -63,36 +85,52 @@ public class Visitor{
 		{
 			if(b == this)
 				continue;
-			if(b.location.distance(newLocation) < 19)
+			if(b.location.distance(newLocation) < 20)
 			{
 				isCollision = true;
 				break;
 			}
-			TiledLoader loader = new TiledLoader();
-			if(b.location.equals(loader.getColLayer()));
+//			TiledLoader loader = new TiledLoader();
+//			if(b.location.equals(loader.getColLayer()));
 		}
+	
 		
 		if(!isCollision)
-			location = newLocation;
+		{
+			int tileX = (int) Math.floor(newLocation.getX() / 32);
+			int tileY = (int) Math.floor(newLocation.getY() / 32);
+			if(collisionLayer.getData2DPoint(tileX, tileY) != 364)
+				location = newLocation;
+		}
 		else{
-			direction += 0.3;
+			direction += 0.9f;
 			
 		}
 		
 	}
+	
+	public boolean isAtTarget(){
+		
+		if(target.getValue((int)location.getX()/32,(int)location.getY()/32)<3){
+//			System.out.println(true);
+			return true;
+		}
+//			System.out.println(false);
+			return false;
+	}
+	
 	public Point2D getLocation()
 	{
 		return location;
 	} 
 
-	public void setTarget(Point2D point) {
-		this.target = point;		
+	public void setPointTarget(Point point) {
+		this.pointTarget = point;		
 	}
 	
-	public Point2D getTarget()
-	{
-		return target;
-	} 
+	public void setTarget(Target target){
+		this.target = target;
+	}
 
 
 }

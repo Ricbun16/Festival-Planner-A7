@@ -18,12 +18,13 @@ import org.json.simple.parser.ParseException;
 public class TiledLayer {
 
 	ArrayList<Long> data;
+	Long[][] data2D;
 	JSONObject layer;
 	JSONArray JSONData;
 	String name;
 	String type;
-	int width, height;
-	int x, y;
+	private int width, height;
+	private int x, y;
 	double opacity;
 	boolean visible;
 	BufferedImage layerImage;
@@ -37,6 +38,7 @@ public class TiledLayer {
 	}
 
 	public void loadTilelayer(JSONObject layer) throws FileNotFoundException, IOException, ParseException {
+		
 		try {
 			// take all needed information from a tilelayer.
 			this.layer = layer;
@@ -51,10 +53,18 @@ public class TiledLayer {
 			x = ((Long)layer.get("x")).intValue();
 			y = ((Long)layer.get("y")).intValue();
 			data = (ArrayList<Long>) JSONData;
-			System.out.println(data);
+			data2D = new Long[width][height]; //(int) Math.sqrt(data.size())
+//			System.out.println(data);
 //			System.out.println(opacity);
 //			System.out.println(JSONData);
 //			System.out.println(data);
+			int i = 0;
+			for(int y =0; y < height; y ++) {
+				for(int x = 0; x< width ; x++) {
+					data2D[x][y] = data.get(i);
+					i++;
+				}
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -63,6 +73,10 @@ public class TiledLayer {
 
 	public ArrayList<Long> getData() {
 		return data;
+	}
+	
+	public Integer getData2DPoint(int x, int y) {
+		return data2D[x][y].intValue();
 	}
 
 	public JSONObject getLayer() {
@@ -101,4 +115,7 @@ public class TiledLayer {
 		return visible;
 	}
 	
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 }
