@@ -63,7 +63,7 @@ public class Visitor{
 		{
 			if(b == this)
 				continue;
-			if(b.location.distance(newLocation) < 18)
+			if(b.location.distance(newLocation) < 19)
 			{
 				isCollision = true;
 				break;
@@ -85,9 +85,14 @@ public class Visitor{
 		return location;
 	} 
 
-	public void setTarget(Point point) {
+	public void setTarget(Point2D point) {
 		this.target = point;		
 	}
+	
+	public Point2D getTarget()
+	{
+		return target;
+	} 
 
 
 }
