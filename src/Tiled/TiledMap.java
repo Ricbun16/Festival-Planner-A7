@@ -192,15 +192,15 @@ public class TiledMap  extends JPanel implements ActionListener{
 			for(int ii = 0; ii < pop.size(); ii++){
 				if((random > count)&&(random < (count + pop.get(ii)))){
 					switch(currentTimeSlots.get(ii).getStageName()){
-						case "Stage 1": visitors.get(i).setTarget(targets.get(31));
+						case "Stage 1": visitors.get(i).setTarget(targets.get(1));
 						break;
-						case "Stage 2": visitors.get(i).setTarget(targets.get(32));
+						case "Stage 2": visitors.get(i).setTarget(targets.get(2));
 						break;
-						case "Stage 3": visitors.get(i).setTarget(targets.get(33));
+						case "Stage 3": visitors.get(i).setTarget(targets.get(3));
 						break;
-						case "Stage 4": visitors.get(i).setTarget(targets.get(34));
+						case "Stage 4": visitors.get(i).setTarget(targets.get(4));
 						break;
-						case "Stage 5": visitors.get(i).setTarget(targets.get(35));
+						case "Stage 5": visitors.get(i).setTarget(targets.get(5));
 						break;
 						default:  visitors.get(i).setPointTarget(new Point(5000,1200));
 						break;
@@ -240,18 +240,18 @@ public class TiledMap  extends JPanel implements ActionListener{
 			tick = 0;
 			System.out.println(seconds);
 			if(seconds > 3){
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(39));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(38));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(37));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(36));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(1));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(2));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(3));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(4));
 			}
 		
 			if (seconds == 26){
 				for(int i = 0 ; i < 50; i++) {
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(39));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(),targets.get(38));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(37));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(36));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(1));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(),targets.get(2));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(3));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(4));
 				}
 			}
 			if (seconds > 30) {
