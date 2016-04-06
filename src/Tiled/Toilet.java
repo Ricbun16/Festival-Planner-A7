@@ -10,18 +10,19 @@ public class Toilet implements ActionListener {
 	private Point2D oldPoint;
 	private Point2D toiletLocation;
 	
-	public Toilet(Visitor visitor, Point2D oldPoint, Point2D target)
+	public Toilet(Visitor visitor, Point2D oldPoint, Target target)
 	{
 		this.visitor = visitor;
 		this.oldPoint = oldPoint;
-		this.toiletLocation = target;
+		this.toiletLocation = new Point2D.Double((double)(target.getX()*32), (double)(target.getY()*32));
+				//;
 //		visitor.setTarget(toiletLocation);		
 		new Timer(1, this).start();
 	}
 	public boolean onPlace()
 	{
 	
-		if(visitor.getLocation().distance(toiletLocation) <= 120  ){
+		if(visitor.getLocation().distance(toiletLocation) <= 30  ){
 		return true;
 		}
 		else {
