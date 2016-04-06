@@ -22,7 +22,7 @@ public class Visitor{
 		this.location = location;
 		sprite = new ImageIcon("visitor.png").getImage();
 		direction = Math.random() * Math.PI*2;
-		speed = Math.random() * 10 +2;
+		speed = 10;
 		pointTarget = new Point2D.Double(250, 0);
 	}
 
@@ -132,7 +132,7 @@ public class Visitor{
 		this.target = target;
 	}
 
-	public Point2D getTarget(){
-		return pointTarget;
+	public Target getTarget(){
+		return target;
 	}
 }
