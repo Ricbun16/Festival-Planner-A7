@@ -44,26 +44,19 @@ public class TiledMap  extends JPanel implements ActionListener{
 	private JButton vooruit;
 	private JLabel tijd;
 	private int tijdState = 0;
-	
-//	public static void main(String[] args){
-//		JFrame frame = new JFrame("Simulator");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		
-//		JPanel panel = new TiledMap(new Schedule());
-//		frame.setContentPane(panel);
-//		frame.setSize(840, 480);
-//		frame.setVisible(true);
-//	}
+	private ArrayList<TimeSlotMem> memSlotList;
 
 	public TiledMap(Schedule schedule){
 		cameraTransform = new AffineTransform();
 		tLoader = new TiledLoader(file);
 		tLoader.createLayers();
 		visitors = new ArrayList<Visitor>();
+		memSlotList = new ArrayList<TimeSlotMem>();
 		this.schedule = schedule;
 		currentTimeSlots = new ArrayList<TimeSlot>();
 		currentTime = schedule.getScheduleStartTime()*100;
 		targets = tLoader.getTargets();
+		makeLittleFrame();
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me){
@@ -247,14 +240,14 @@ public class TiledMap  extends JPanel implements ActionListener{
 			tick = 0;
 			System.out.println(seconds);
 			if(seconds > 3){
-				new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(900,900));
-				new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(20,20));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), new Point(900,900));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), new Point(20,20));
 			}
 		
 			if (seconds == 26){
 				for(int i = 0 ; i < 50; i++) {
-					new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(20,20));
-					new Toilet(visitors.get((int)(Math.random() * 499 + 1)), visitors.get((int)(Math.random() * 499 + 1)).getTarget(), new Point(900,900));
+					new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), new Point(20,20));
+					new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), new Point(900,900));
 				}
 			}
 			if (seconds > 30) {
