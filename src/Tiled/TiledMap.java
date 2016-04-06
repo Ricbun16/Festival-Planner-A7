@@ -117,8 +117,12 @@ public class TiledMap  extends JPanel implements ActionListener{
 				position = new Point2D.Double(position.getX()+50, position.getY());}
 				else{position = new Point2D.Double(70, position.getY()+50);}
 			}
-			visitors.add(new Visitor(position));
+			visitors.add(new Visitor(position,this));
+			
 		}
+
+		switchTimeslot(0);
+		setInitialTarget();
 	}
 	
 	public void switchTimeslot(int vooruit){
@@ -158,6 +162,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 		}
 		
 		if(vooruit == 2) {
+			if(currentTime + 30 > schedule.getScheduleStartTime()*100){
 			currentTime-=30;
 			if(currentTime%100>60)
 				currentTime-=40;
@@ -165,10 +170,24 @@ public class TiledMap  extends JPanel implements ActionListener{
 				if(m.getTime() == currentTime) {
 					visitors.clear();
 					for(Point2D p : m.getLocations())
-						visitors.add(new Visitor(p));
+						visitors.add(new Visitor(p, this));
 					for(TimeSlot ts : m.getLijst())
 						currentTimeSlots.add(ts);
 					break;
+				}
+			}
+			}
+			else{
+				currentTime = schedule.getScheduleStartTime()*100;
+				for(TimeSlotMem m : memSlotList) {
+					if(m.getTime() == currentTime) {
+						visitors.clear();
+						for(Point2D p : m.getLocations())
+							visitors.add(new Visitor(p,this));
+						for(TimeSlot ts : m.getLijst())
+							currentTimeSlots.add(ts);
+						break;
+					}
 				}
 			}
 		}
@@ -217,7 +236,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 						break;
 						case "Stage 5": visitors.get(i).setTarget(targets.get(5));
 						break;
-						default:  visitors.get(i).setPointTarget(new Point(5000,1200));
+						default:  visitors.get(i).setTarget(targets.get(0));
 						break;
 					}
 				}
@@ -225,6 +244,39 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}
 		}		
 		currentTimeSlots.clear();	
+	}
+	public void setInitialTarget()
+	{
+		int totalPop = 0;
+		ArrayList<Integer> pop = new ArrayList<Integer>();
+		if(currentTimeSlots != null){
+			for(int y = 0; y < currentTimeSlots.size(); y++){
+				totalPop += currentTimeSlots.get(y).getPopularity();
+				pop.add(currentTimeSlots.get(y).getPopularity());
+			}
+		}
+		for(int i = 0; i < visitors.size(); i++){
+			int random = (int)(Math.random() * totalPop + 1), count = 0;
+			for(int ii = 0; ii < pop.size(); ii++){
+				if((random > count)&&(random < (count + pop.get(ii)))){
+					switch(currentTimeSlots.get(ii).getStageName()){
+						case "Stage 1": visitors.get(i).setTarget(targets.get(1));
+						break;
+						case "Stage 2": visitors.get(i).setTarget(targets.get(2));
+						break;
+						case "Stage 3": visitors.get(i).setTarget(targets.get(3));
+						break;
+						case "Stage 4": visitors.get(i).setTarget(targets.get(4));
+						break;
+						case "Stage 5": visitors.get(i).setTarget(targets.get(5));
+						break;
+						default:  visitors.get(i).setTarget(targets.get(0));
+						break;
+					}
+				}
+				count += pop.get(ii);
+			}
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -242,9 +294,11 @@ public class TiledMap  extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-		for(Visitor b : visitors)
-			b.update(visitors, tLoader.getColLayer());
 		
+		for(Visitor b : visitors){
+			setInitialTarget();
+			b.update(visitors, tLoader.getColLayer());
+		}
 		if(tick < 50)
 			tick++;
 		else {
@@ -255,18 +309,18 @@ public class TiledMap  extends JPanel implements ActionListener{
 			tick = 0;
 			System.out.println(seconds);
 			if(seconds > 3){
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(1));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(2));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(3));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(4));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(8));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(7));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(6));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(5));
 			}
 		
 			if (seconds == 26){
 				for(int i = 0 ; i < 50; i++) {
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(1));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(),targets.get(2));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(3));
-				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(4));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(6));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(),targets.get(7));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(8));
+				new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get(5));
 				}
 			}
 			if (seconds > 30) {
@@ -276,6 +330,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 			if (minutes == 59)
 				minutes = 0;
 			else {
+				switchTimeslot(0);
 				seconds++;
 				minutes++;
 			}

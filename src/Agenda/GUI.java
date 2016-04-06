@@ -47,6 +47,7 @@ public class GUI extends JFrame {
 	private String scheduleName = "Festival";
 	private JLabel nameLabel ;
 	private String date;
+	private int stageNumber = 1;
 
 	public static void main(String s[]) {
 		new GUI();
@@ -235,16 +236,16 @@ public class GUI extends JFrame {
 
 		JTextField field1 = new JTextField();
 		JTextField field3 = new JTextField();
-		JTextField field5 = new JTextField();
 
+		String stageName;
 		int hoursStart;
 		int hoursStop;
 		int minuteStart;
 		int minuteStop;
 		int timeSlotLength;
-		String stageName;
+		
 
-		Object[] message = { "BeginTijd", field1, "eindtijd", field3, "Naam", field5};
+		Object[] message = { "BeginTijd", field1, "eindtijd", field3};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
 				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
@@ -253,7 +254,8 @@ public class GUI extends JFrame {
 			minuteStart = 00;
 			hoursStop = Integer.parseInt(field3.getText());
 			minuteStop = 0;
-			stageName = (String) field5.getText();
+			stageName = "Stage " + stageNumber;
+			stageNumber++;
 			timeSlotLength = 30;
 			if (minuteStart >= 60) {
 				minuteStart -= 60;

@@ -17,13 +17,13 @@ public class Visitor{
 	private Point2D pointTarget;
 	private Target target;
 
-	public Visitor(Point2D location)
+	public Visitor(Point2D location, TiledMap map)
 	{
 		this.location = location;
 		sprite = new ImageIcon("visitor.png").getImage();
 		direction = Math.random() * Math.PI*2;
 		speed = Math.random() * 10 +2;
-		pointTarget = new Point2D.Double(250, 0);
+		pointTarget = new Point2D.Double(0, 1900);
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -37,7 +37,6 @@ public class Visitor{
 	}
 
 	public void update(ArrayList<Visitor> visitors, TiledLayer collisionLayer) {
-
 		if(target != null){
 		if(isAtTarget()){
 		}
@@ -56,6 +55,11 @@ public class Visitor{
 			pointTarget =(Point2D) new Point((newPoint.x*32)+16,(newPoint.y*32)+16);
 		}
 		}
+		else
+		{
+			
+		}
+		
 //		System.out.println("target x"+ pointTarget.getX());
 //		System.out.println("target y "+ pointTarget.getY());
 		double dx = pointTarget.getX() - location.getX();
@@ -124,9 +128,9 @@ public class Visitor{
 		return location;
 	} 
 
-	public void setPointTarget(Point point) {
-		this.pointTarget = point;		
-	}
+//	public void setPointTarget(Point point) {
+//		this.pointTarget = point;		
+//	}
 	
 	public void setTarget(Target target){
 		this.target = target;
