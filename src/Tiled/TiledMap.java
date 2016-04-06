@@ -189,4 +189,49 @@ public class TiledMap  extends JPanel implements ActionListener{
 				return false;
 		return true;
 	}
+	
+public void makeLittleFrame(){
+		
+		JPanel content = new JPanel(new FlowLayout());
+		JFrame littleFrame = new JFrame("Bediening");
+		littleFrame.setSize(250,60);
+		littleFrame.setContentPane(content);
+		littleFrame.setResizable(false);
+		littleFrame.setVisible(true);
+		
+		terug = new JButton("<");
+		vooruit = new JButton(">");
+		tijd = new JLabel(" ");
+		content.add(terug);
+		content.add(tijd);
+		content.add(vooruit);
+		
+		terug.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(minutes < 30) {
+					minutes = 30;
+					seconds = 0;
+				} else {
+					minutes = 0;
+					seconds = 0;
+				} 
+				switchTimeslot(2);
+			}
+		});
+		
+		vooruit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(minutes < 30) {
+					minutes = 30;
+					seconds = 0;
+				} else {
+					minutes = 0;
+					seconds = 0;
+				} 
+				switchTimeslot(1);
+			}
+		});
+		
+	}
+
 }

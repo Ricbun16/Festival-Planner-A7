@@ -15,7 +15,7 @@ public class Toilet implements ActionListener {
 		this.visitor = visitor;
 		this.oldPoint = oldPoint;
 		this.toiletLocation = target;
-		visitor.setTarget(toiletLocation);		
+//		visitor.setTarget(toiletLocation);		
 		new Timer(1, this).start();
 	}
 	public boolean onPlace()
@@ -31,8 +31,8 @@ public class Toilet implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		if((visitor.getTarget() != oldPoint) && (visitor.getTarget() != toiletLocation))
 			oldPoint = visitor.getTarget();
-		if(onPlace())
-			visitor.setTarget(oldPoint);
+//		if(onPlace())
+//			visitor.setTarget(oldPoint);
 	}
 
 }
