@@ -28,7 +28,7 @@ public class TiledMap  extends JPanel implements ActionListener{
 	AffineTransform cameraTransform;
 	int oldX, oldY;
 	int newX, newY;
-	int aantalVisitors = 100;
+	int aantalVisitors;// = 100;
 	private Point mousePoint;
 	private ArrayList<Visitor> visitors;
 	private Schedule schedule;
@@ -87,9 +87,29 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}	
 		});
 		
-		for(int i = 0; i < aantalVisitors; i++)
+//		for(int i = 0; i < aantalVisitors; i++)
+//		{
+//			
+//			Point2D position = new Point2D.Double(70,1800);
+//			while(!canSpawn(position)){
+//				if(position.getX()<240){
+//				
+//				position = new Point2D.Double(position.getX()+50, position.getY());}
+//				else{position = new Point2D.Double(70, position.getY()+50);}
+//			}
+//			visitors.add(new Visitor(position));
+//		}
+//		spawnVisitors(aantalVisitors);
+		
+		new Timer(1, this).start();
+		
+		switchTimeslot(0);
+		
+	}
+	
+	public void spawnVisitors(int amountVisitors){
+		for(int i = 0; i < amountVisitors; i++)
 		{
-			
 			Point2D position = new Point2D.Double(70,1800);
 			while(!canSpawn(position)){
 				if(position.getX()<240){
@@ -99,11 +119,6 @@ public class TiledMap  extends JPanel implements ActionListener{
 			}
 			visitors.add(new Visitor(position));
 		}
-		
-		new Timer(1, this).start();
-		
-		switchTimeslot(0);
-		
 	}
 	
 	public void switchTimeslot(int vooruit){
@@ -319,6 +334,14 @@ public void makeLittleFrame(){
 			}
 		});
 		
+	}
+
+	public void setAantalVisitors(int aantal){
+		this.aantalVisitors = aantal;
+	}
+	
+	public int getAantalVisitors(){
+		return aantalVisitors;
 	}
 
 }

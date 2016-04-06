@@ -119,18 +119,22 @@ public class GUI extends JFrame {
 		menu.add(menuItem);
 		menuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				int visitorAmount = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of visitors."));
 				JFrame simulatorFrame = new JFrame("Simulator");
 				simulatorFrame.setSize(700,700);
 				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				JPanel content = new Tiled.TiledMap(schedule);
+				Tiled.TiledMap tMap = new Tiled.TiledMap(schedule);
+//				tMap.setAantalVisitors(visitorAmount);
+				
+				System.out.println("Aantal Visitors:\t"+ visitorAmount);
+				JPanel content = tMap;
+				tMap.spawnVisitors(visitorAmount);
 				content.setBackground(Color.black);
 				simulatorFrame.setContentPane(content);
 				simulatorFrame.setResizable(false);
 				simulatorFrame.setVisible(true);
 				simulatorFrame.setBackground(Color.black);
 			}
-			
-			
 		});
 
 		westBorder = new JPanel();
