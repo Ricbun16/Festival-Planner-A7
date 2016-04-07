@@ -49,13 +49,13 @@ public class TiledMap extends JPanel implements ActionListener {
 	private ArrayList<TimeSlotMem> memSlotList;
 
 	public TiledMap(Schedule schedule, int aantalVisitors) {
+		this.schedule = schedule;
 		this.aantalVisitors = aantalVisitors;
 		cameraTransform = new AffineTransform();
 		tLoader = new TiledLoader(file);
-		tLoader.createLayers();
+		tLoader.createLayers(schedule);
 		visitors = new ArrayList<Visitor>();
 		memSlotList = new ArrayList<TimeSlotMem>();
-		this.schedule = schedule;
 		currentTimeSlots = new ArrayList<TimeSlot>();
 		currentTime = schedule.getScheduleStartTime() * 100;
 		endTime = schedule.getScheduleStopTime() * 100;
