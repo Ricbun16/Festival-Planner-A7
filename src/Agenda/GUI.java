@@ -239,7 +239,6 @@ public class GUI extends JFrame {
 			stageNumber++;
 			schedule.addStage( stageName, scheduleStart * 100, scheduleStop*100, timeSlotLength);
 			makeButton(stageName);
-		}
 	}
 
 	public void addShow() {
