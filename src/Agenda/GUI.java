@@ -292,7 +292,7 @@ public class GUI extends JFrame {
 							boolean isOcupied = false;
 							for(int i: timeSlots)
 							{
-								if(i == timeSlot)
+								if(i == timeSlot|| timeSlot<0)
 								{
 								 isOcupied = true;	
 								}
