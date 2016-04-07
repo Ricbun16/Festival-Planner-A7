@@ -1,4 +1,5 @@
 package Tiled;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,7 +14,9 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -31,29 +34,31 @@ public class TiledMap  extends JPanel implements ActionListener{
 	private Schedule schedule;
 	private ArrayList<TimeSlot> currentTimeSlots;
 	private int currentTime;
+	private int endTime;
 	private ArrayList<Target> targets;
 	
 	File file = new File("JSON/event.json");
-	
-//	public static void main(String[] args){
-//		JFrame frame = new JFrame("Simulator");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		
-//		JPanel panel = new TiledMap(new Schedule());
-//		frame.setContentPane(panel);
-//		frame.setSize(840, 480);
-//		frame.setVisible(true);
-//	}
+	private int seconds;
+	private int minutes;
+	private int tick;
+	private JButton terug;
+	private JButton vooruit;
+	private JLabel tijd;
+	private int tijdState = 0;
+	private ArrayList<TimeSlotMem> memSlotList;
 
 	public TiledMap(Schedule schedule){
 		cameraTransform = new AffineTransform();
 		tLoader = new TiledLoader(file);
 		tLoader.createLayers();
 		visitors = new ArrayList<Visitor>();
+		memSlotList = new ArrayList<TimeSlotMem>();
 		this.schedule = schedule;
 		currentTimeSlots = new ArrayList<TimeSlot>();
 		currentTime = schedule.getScheduleStartTime()*100;
+		endTime = schedule.getScheduleStopTime()*100;
 		targets = tLoader.getTargets();
+		makeLittleFrame();
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me){
@@ -99,21 +104,80 @@ public class TiledMap  extends JPanel implements ActionListener{
 		
 		new Timer(1, this).start();
 		
-		switchTimeslot();
+		switchTimeslot(0);
 		
 	}
 	
-	public void switchTimeslot(){
+	public void switchTimeslot(int vooruit){
 		
-		currentTimeSlots.clear();
-		for(int x = 0; x < schedule.getStages().size(); x++){
-			TimeSlot current = schedule.getStages().get(x).getTimeSlots().get(1);
-			System.out.println(current.getTimeSlotStart());
-			if(current.getTimeSlotStart()==currentTime){
-				if(current.getOccupied())
-					currentTimeSlots.add(current);
-			schedule.getStages().get(x).getTimeSlots().remove(0);
+		if(vooruit == 1) {
+			currentTime+=30;
+			if(currentTime%100>=60)
+				currentTime+=40;
+
+			ArrayList<Point2D> locations = new ArrayList<Point2D>();
+			for(Visitor v : visitors)
+				locations.add(v.getLocation());
+			memSlotList.add(new TimeSlotMem(currentTime, locations));
+			for(int x = 0; x < schedule.getStages().size(); x++){
+				TimeSlot current = schedule.getStages().get(x).getTimeSlots().get(1);
+				if(current.getTimeSlotStart()==currentTime){
+					if(current.getOccupied()) {
+						currentTimeSlots.add(current);
+						memSlotList.get(tijdState).addTimeslot(current);
+					}
+					schedule.getStages().get(x).getTimeSlots().remove(0);
+				}
 			}
+				
+			if(currentTimeSlots != null)
+				tijdState++;
+			
+			for(TimeSlotMem m : memSlotList) {
+				if(m.getTime() == currentTime) {
+					System.out.println(currentTime);
+					for(TimeSlot ts : m.getLijst())
+						currentTimeSlots.add(ts);
+					break;
+				}
+			}
+				
+		}
+		
+		if(vooruit == 2) {
+			currentTime-=30;
+			if(currentTime%100>60)
+				currentTime-=40;
+			for(TimeSlotMem m : memSlotList) {
+				if(m.getTime() == currentTime) {
+					visitors.clear();
+					for(Point2D p : m.getLocations())
+						visitors.add(new Visitor(p));
+					for(TimeSlot ts : m.getLijst())
+						currentTimeSlots.add(ts);
+					break;
+				}
+			}
+		}
+		
+		if(vooruit == 0) {
+			
+			ArrayList<Point2D> locations = new ArrayList<Point2D>();
+			for(Visitor v : visitors)
+				locations.add(v.getLocation());
+			memSlotList.add(new TimeSlotMem(currentTime, locations));
+			for(int x = 0; x < schedule.getStages().size(); x++){
+				TimeSlot current = schedule.getStages().get(x).getTimeSlots().get(1);
+				if(current.getTimeSlotStart()==currentTime){
+					if(current.getOccupied()) {
+						currentTimeSlots.add(current);
+						memSlotList.get(tijdState).addTimeslot(current);
+					}
+					schedule.getStages().get(x).getTimeSlots().remove(0);
+				}
+			}
+			if(currentTimeSlots != null)
+				tijdState++;
 		}
 		
 		int totalPop = 0;
@@ -126,39 +190,32 @@ public class TiledMap  extends JPanel implements ActionListener{
 		}
 		
 		for(int i = 0; i < visitors.size(); i++){
-			
-			visitors.get(i).setTarget(targets.get(1));
-			
-			
 			int random = (int)(Math.random() * totalPop + 1), count = 0;
 			for(int ii = 0; ii < pop.size(); ii++){
 				if((random > count)&&(random < (count + pop.get(ii)))){
 					switch(currentTimeSlots.get(ii).getStageName()){
-						case "Stage 1": visitors.get(i).setTarget(targets.get(0));
-							break;
-							
-						case "Stage 2": visitors.get(i).setTarget(targets.get(1));
-							break;
-						case "Stage 3": visitors.get(i).setTarget(targets.get(2));
+						case "Stage 1": visitors.get(i).setTarget(targets.get(1));
 						break;
-						case "Stage 4": visitors.get(i).setTarget(targets.get(3));
+						case "Stage 2": visitors.get(i).setTarget(targets.get(2));
 						break;
-						case "Stage 5": visitors.get(i).setTarget(targets.get(4));
+						case "Stage 3": visitors.get(i).setTarget(targets.get(3));
 						break;
-							
-						default:  visitors.get(i).setPointTarget(new Point(5000,1200));
+						case "Stage 4": visitors.get(i).setTarget(targets.get(4));
+						break;
+						case "Stage 5": visitors.get(i).setTarget(targets.get(5));
+						break;
+						default:  visitors.get(i).setTarget(targets.get(0));
 						break;
 					}
 				}
 				count += pop.get(ii);
 			}
-		}
+		}		
+		currentTimeSlots.clear();
 		
-		currentTime+=30;
-		if(currentTime%100>60){
-			currentTime+=40;
-		}
-		
+		if(currentTime == endTime)
+			for(Visitor v : visitors)
+				v.setTarget(targets.get(0));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -178,6 +235,37 @@ public class TiledMap  extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		for(Visitor b : visitors)
 			b.update(visitors, tLoader.getColLayer());
+		
+		if(tick < 50)
+			tick++;
+		else {
+			if(minutes < 10)
+				tijd.setText((currentTime/100) + ":0" + minutes);
+			else
+				tijd.setText((currentTime/100) + ":" + minutes);
+			tick = 0;
+			System.out.println(seconds);
+			if(seconds % 3 == 0){
+				for(int i = 0 ; i < 2; i++) 
+					new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get((int)(Math.random() * 3) + 6));
+			}
+		
+			if (seconds == 26){
+				for(int i = 0 ; i < 10; i++)  
+					new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get((int)(Math.random() * 3) + 6));
+				
+			}
+			if (seconds > 30) {
+				seconds = 0;
+				switchTimeslot(1);
+			}
+			if (minutes == 59)
+				minutes = 0;
+			else {
+				seconds++;
+				minutes++;
+			}
+		}
 
 		repaint();
 	}
@@ -189,4 +277,49 @@ public class TiledMap  extends JPanel implements ActionListener{
 				return false;
 		return true;
 	}
+	
+public void makeLittleFrame(){
+		
+		JPanel content = new JPanel(new FlowLayout());
+		JFrame littleFrame = new JFrame("Bediening");
+		littleFrame.setSize(250,60);
+		littleFrame.setContentPane(content);
+		littleFrame.setResizable(false);
+		littleFrame.setVisible(true);
+		
+		terug = new JButton("<");
+		vooruit = new JButton(">");
+		tijd = new JLabel(" ");
+		content.add(terug);
+		content.add(tijd);
+		content.add(vooruit);
+		
+		terug.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(minutes < 30) {
+					minutes = 30;
+					seconds = 0;
+				} else {
+					minutes = 0;
+					seconds = 0;
+				} 
+				switchTimeslot(2);
+			}
+		});
+		
+		vooruit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(minutes < 30) {
+					minutes = 30;
+					seconds = 0;
+				} else {
+					minutes = 0;
+					seconds = 0;
+				} 
+				switchTimeslot(1);
+			}
+		});
+		
+	}
+
 }

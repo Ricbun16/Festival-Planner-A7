@@ -116,4 +116,8 @@ public class Target {
 	public int getY(){
 		return start.y;
 	}
+	
+	public Point2D getXY() {
+		return new Point(tObject.getX(), tObject.getY());
+	}
 }

@@ -123,7 +123,7 @@ public class GUI extends JFrame {
 				simulatorFrame.setSize(700,700);
 				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				JPanel content = new Tiled.TiledMap(schedule);
-			//	content.setBackground(Color.black);
+				content.setBackground(Color.black);
 				simulatorFrame.setContentPane(content);
 				simulatorFrame.setResizable(false);
 				simulatorFrame.setVisible(true);
