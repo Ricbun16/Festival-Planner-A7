@@ -14,6 +14,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import Agenda.Schedule;
+import Agenda.Stage;
+
 public class TiledLoader {
 	private File file;
 	private ArrayList<TiledTileset> tilesets;
@@ -108,10 +111,25 @@ public class TiledLoader {
 		return collisionLayer;
 	}
 	
-	public void createLayers() {
+	public void createLayers(Schedule schedule) {
+		ArrayList<Stage> stages =  schedule.getStages();
+
+		for (int i = 0; i < 9; i++) {
+			if(i == 0 || i == 3 || i == 6 || i == 7)
+				continue;
+			tilelayers.get(i).setVisible(false);
+		}
+		for(int i = 0; i <  stages.size(); i++) {
+
+			for(int ii = 0; ii < tilelayers.size(); ii++) {
+				System.out.println(stages.get(i).getName());
+				System.out.println(tilelayers.get(ii).getName());
+				if(stages.get(i).getName().equals(tilelayers.get(ii).getName()))
+					tilelayers.get(ii).setVisible(true);
+			}
+		}
+
 		for(int i = 0; i < tilelayers.size(); i++) {
-//			System.out.println(tilelayers.size());
-//			System.out.println(tilesets.size());
 			long numberID = 0;
 			TiledTileset ts = new TiledTileset();
 			for(TiledLayer tl : tilelayers) {
@@ -120,15 +138,13 @@ public class TiledLoader {
 						numberID = idnumber;
 				}
 			}
-//			System.out.println("numberID\t" + numberID);
+			
 			for(int q = tilesets.size() -1; q >= 0; q--) {
 				if(numberID > tilesets.get(q).getFirstgid()) {
 					ts = tilesets.get(q);
 				}
 			}
-//			for(TiledTileset ts : tilesets) {
-//				if( ts.getFirstgid() >)
-//			}
+
 			BufferedImage bI = new BufferedImage(tilelayers.get(i).getWidth() * ts.getTileWidth(), tilelayers.get(i).getHeight() * ts.getTileHeight(), BufferedImage.TYPE_INT_ARGB);
 			tilelayers.get(i).layerImage = bI;
 			g2 = bI.createGraphics();
@@ -139,7 +155,6 @@ public class TiledLoader {
 				for(int x = 0; x < tilelayers.get(i).getWidth(); x++) {
 					int number = data.get(lastPosition).intValue();
 					
-
 					g2.drawImage(tilesetTiles.get(number),x *  ts.getTileWidth(),y * ts.getTileHeight(), ts.getTileWidth(), ts.getTileHeight(), null);
 					lastPosition++;
 				}
@@ -147,7 +162,6 @@ public class TiledLoader {
 		}
 		createTargets();
 	}
-	
 	public void createTargets() {
 
 		for(TiledObject temp : objectTargets) {
