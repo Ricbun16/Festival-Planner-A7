@@ -42,11 +42,13 @@ public class GUI extends JFrame {
 	private boolean maxStages = false;
 	private String title;
 	private JLabel titleLabel;
+	private int stageNumber = 1;
 	private int scheduleStart;
 	private int scheduleStop;
 	private String scheduleName = "Festival";
 	private JLabel nameLabel ;
 	private String date;
+	private int aantalVisitors;
 
 	public static void main(String s[]) {
 		new GUI();
@@ -69,12 +71,13 @@ public class GUI extends JFrame {
 		JTextField field1 = new JTextField();
 		JTextField field2 = new JTextField();
 		JTextField field3 = new JTextField();
+		JTextField field4 = new JTextField();
 
 		int hoursStart;
 		int hoursStop;
 		String name;
 
-		Object[] message = { "Start Uur", field1, "Eind Uur:", field2, "Festival naam", field3};
+		Object[] message = { "Start Uur", field1, "Eind Uur:", field2, "Festival naam", field3, "Aantal Bezoekers", field4};
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
 				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
@@ -82,15 +85,17 @@ public class GUI extends JFrame {
 			hoursStart = Integer.parseInt(field1.getText());
 			hoursStop = Integer.parseInt(field2.getText());
 			name = field3.getText();
-			if (hoursStart <= hoursStop && hoursStart < 25 && hoursStop < 25) {
+			aantalVisitors = Integer.parseInt(field4.getText());
+			if (hoursStart <= hoursStop && hoursStart < 25 && hoursStop < 25 && aantalVisitors > 0 && hoursStart > 0) {
 				scheduleStart = hoursStart;
 				scheduleStop = hoursStop;
 				scheduleName = name;
 				nameLabel.setText(scheduleName+" - "+date);
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Geen geldige schedule tijd", "Error",
+				JOptionPane.showMessageDialog(null, "Geen geldige schedule tijd of aantal visitors", "Error",
 						JOptionPane.INFORMATION_MESSAGE);
+						getScheduleTime();
 			}
 
 		}
@@ -122,7 +127,7 @@ public class GUI extends JFrame {
 				JFrame simulatorFrame = new JFrame("Simulator");
 				simulatorFrame.setSize(700,700);
 				simulatorFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				JPanel content = new Tiled.TiledMap(schedule);
+				JPanel content = new Tiled.TiledMap(schedule, aantalVisitors);
 				content.setBackground(Color.black);
 				simulatorFrame.setContentPane(content);
 				simulatorFrame.setResizable(false);
@@ -228,47 +233,12 @@ public class GUI extends JFrame {
 	}
 
 	public void addStagePopUp() {
-
-		JTextField field1 = new JTextField();
-		JTextField field3 = new JTextField();
-		JTextField field5 = new JTextField();
-
-		int hoursStart;
-		int hoursStop;
-		int minuteStart;
-		int minuteStop;
-		int timeSlotLength;
-		String stageName;
-
-		Object[] message = { "BeginTijd", field1, "eindtijd", field3, "Naam", field5};
-		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
-				JOptionPane.OK_CANCEL_OPTION);
-		if (option == JOptionPane.OK_OPTION) {
-
-			hoursStart = Integer.parseInt(field1.getText());
-			minuteStart = 00;
-			hoursStop = Integer.parseInt(field3.getText());
-			minuteStop = 0;
-			stageName = (String) field5.getText();
-			timeSlotLength = 30;
-			if (minuteStart >= 60) {
-				minuteStart -= 60;
-				hoursStart += 1;
-			}
-			if (minuteStop >= 60) {
-				minuteStop -= 60;
-				hoursStop += 1;
-			}
-			int timeStart = hoursStart * 100 + minuteStart;
-			int timeStop = hoursStop * 100 + minuteStop;
-			if (schedule.getScheduleStartTime() <= hoursStart && schedule.getScheduleStopTime() >= hoursStop
-					&& hoursStart < hoursStop) {
-				schedule.addStage(stageName, timeStart, timeStop, timeSlotLength);
-				makeButton(stageName);
-			} else {
-				JOptionPane.showMessageDialog(null, "Stage valt buiten schema", "Error",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
+		String stageName = "Stage ";
+		int timeSlotLength = 30;
+		stageName += stageNumber;
+			stageNumber++;
+			schedule.addStage( stageName, scheduleStart * 100, scheduleStop*100, timeSlotLength);
+			makeButton(stageName);
 		}
 	}
 
@@ -288,9 +258,6 @@ public class GUI extends JFrame {
 		int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values",
 				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
-			for (Artist testArtist : artists) {
-				// System.out.println(testArtist.getName());
-			}
 
 			try {
 				artistName = field1.getText();
@@ -315,13 +282,31 @@ public class GUI extends JFrame {
 						artistSet = true;
 					}
 				}
-				if (!schedule.checkDoubleBooking(artist, timeSlot, currentStage)|| !currentStage.getTimeSlot(timeSlot).getOccupied()) {
+				if (!schedule.checkDoubleBooking(artist, timeSlot, currentStage)|| !currentStage.getTimeSlot(timeSlot).getOccupied() && popularity > 0) {
 					if (artistSet) {
 
 						try {
+						ArrayList<Integer> timeSlots = new ArrayList<Integer>(artist.getOccupiedTimeSlots());
+							boolean isOcupied = false;
+							for(int i: timeSlots)
+							{
+								if(i == timeSlot|| timeSlot<0)
+								{
+								 isOcupied = true;	
+								}
+							}
+							if(!isOcupied){
 							currentStage.scheduleArtist(timeSlot, artist,popularity);
 							fillTimeslots(currentStage);
+							}
+							else{
+							JOptionPane.showMessageDialog(null, "De artiest is dubbel geboekt", "Error",
+									JOptionPane.INFORMATION_MESSAGE);
+								addShow();
+					
+							}
 						}
+		
 
 						catch (Exception e) {
 						}
@@ -339,7 +324,8 @@ public class GUI extends JFrame {
 
 				}
 			} catch (IndexOutOfBoundsException e) {
-
+				JOptionPane.showMessageDialog(null, "De artiest is dubbel geboekt", "Error",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 			tableModel.refresh();
 			repaint();
