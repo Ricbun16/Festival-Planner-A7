@@ -64,7 +64,7 @@ public class Target {
 	}
 	
 	public Point getNextPoint(int x, int y){
-		if(x>49 || y>49 || x<0 || y<0){
+		if(x>49 || y>99 || x<0 || y<0){
 			
 		}else{
 //		System.out.println("Start:\t" + start.getX() + "\t" + start.getY());
