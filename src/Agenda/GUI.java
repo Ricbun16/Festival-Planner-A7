@@ -192,6 +192,7 @@ public class GUI extends JFrame {
 						schedule = temp;
 						artists = temp.getArtist();
 						stages = temp.getStages();
+						aantalVisitors = temp.getAantalVisitors();
 						addButtonsLoad();
 						switchState();
 						tableModel.refresh();

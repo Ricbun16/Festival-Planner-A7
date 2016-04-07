@@ -20,6 +20,7 @@ public class Schedule implements Serializable{
 	private String artistName;
 	private int scheduleStartTime;
 	private int scheduleStopTime;
+	private int aantalVisitors = 500;
 	
 	public Schedule()
 	{
@@ -141,5 +142,13 @@ public class Schedule implements Serializable{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	
+	public int getAantalVisitors() {
+		return aantalVisitors;
+	}
+	
+	public void setAantalVisitors(int av) {
+		aantalVisitors = av;
 	}
 }
