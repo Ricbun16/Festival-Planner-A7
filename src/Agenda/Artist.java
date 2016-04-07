@@ -6,11 +6,21 @@ public class Artist implements Serializable{
 	private String artistName;
 	private ArrayList<String> genres;
 	private String genre;
+	private ArrayList <Integer> occupiedTimeSlots;
 	
 	public Artist(String name, ArrayList<String> genres)
 	{
 		this.genres = genres;
 		artistName = name;
+		this.occupiedTimeSlots = null;
+	}
+	public ArrayList<Integer> getOccupiedTimeSlots()
+	{
+		return occupiedTimeSlots;
+	}
+	public void addTimeSlot(int slot)
+	{
+		occupiedTimeSlots.add(slot);
 	}
 	public Artist(String name, String genre)
 	{
