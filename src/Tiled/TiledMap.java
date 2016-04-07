@@ -250,12 +250,12 @@ public class TiledMap  extends JPanel implements ActionListener{
 			tick = 0;
 			System.out.println(seconds);
 			if(seconds % 3 == 0){
-				for(int i = 0 ; i < 2; i++) 
+				for(int i = 0 ; i < 5; i++) 
 					new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get((int)(Math.random() * 3) + 6));
 			}
 		
 			if (seconds == 26){
-				for(int i = 0 ; i < 10; i++)  
+				for(int i = 0 ; i < 20; i++)  
 					new Toilet(visitors.get((int)(Math.random() * aantalVisitors)), visitors.get((int)(Math.random() * aantalVisitors)).getTarget(), targets.get((int)(Math.random() * 3) + 6));
 				
 			}
