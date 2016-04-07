@@ -146,7 +146,11 @@ public class TiledMap  extends JPanel implements ActionListener{
 		
 		if(vooruit == 2) {
 			currentTime-=30;
-			if(currentTime%100>60)
+			if(currentTime < schedule.getScheduleStartTime()*100) {
+				currentTime = schedule.getScheduleStartTime()*100;
+				minutes = 0;
+			}
+			else if(currentTime%100>60)
 				currentTime-=40;
 			for(TimeSlotMem m : memSlotList) {
 				if(m.getTime() == currentTime) {
