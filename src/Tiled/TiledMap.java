@@ -48,9 +48,10 @@ public class TiledMap  extends JPanel implements ActionListener{
 	private ArrayList<TimeSlotMem> memSlotList;
 
 	public TiledMap(Schedule schedule){
+		this.schedule = schedule;
 		cameraTransform = new AffineTransform();
 		tLoader = new TiledLoader(file);
-		tLoader.createLayers();
+		tLoader.createLayers(schedule);
 		visitors = new ArrayList<Visitor>();
 		memSlotList = new ArrayList<TimeSlotMem>();
 		this.schedule = schedule;

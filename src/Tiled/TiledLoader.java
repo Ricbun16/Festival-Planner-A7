@@ -14,6 +14,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import Agenda.Schedule;
+import Agenda.Stage;
+
 public class TiledLoader {
 	private File file;
 	private ArrayList<TiledTileset> tilesets;
@@ -108,7 +111,34 @@ public class TiledLoader {
 		return collisionLayer;
 	}
 	
-	public void createLayers() {
+	public void createLayers(Schedule schedule) {
+		ArrayList<Stage> stages =  schedule.getStages();
+//		for(int i = 0; i < stages.size(); i++) {
+//			tilelayers.get(i).setVisible(true);
+//		}
+//		for(int i = tilelayers.size(); stages.size() >= i; i--){
+//			tilelayers.get(i).setVisible(false);
+//		}
+		for (int i = 0; i < 9; i++) {
+			if(i == 0 || i == 3 || i == 6 || i == 7)
+				continue;
+			tilelayers.get(i).setVisible(false);
+		}
+		for(int i = 0; i <  stages.size(); i++) {
+//			int ii = 0;
+			for(int ii = 0; ii < tilelayers.size(); ii++) {
+				System.out.println(stages.get(i).getName());
+				System.out.println(tilelayers.get(ii).getName());
+				if(stages.get(i).getName().equals(tilelayers.get(ii).getName()))
+					tilelayers.get(ii).setVisible(true);
+			}
+//			while(stages.get(ii).getName() != tilelayers.get(ii).getName() ) {
+//				tilelayers.get(ii).setVisible(true);
+//				ii++;
+//			}
+			 
+		}
+//		tilelayers.get(2).setVisible(false);
 		for(int i = 0; i < tilelayers.size(); i++) {
 //			System.out.println(tilelayers.size());
 //			System.out.println(tilesets.size());
@@ -121,6 +151,7 @@ public class TiledLoader {
 				}
 			}
 //			System.out.println("numberID\t" + numberID);
+			
 			for(int q = tilesets.size() -1; q >= 0; q--) {
 				if(numberID > tilesets.get(q).getFirstgid()) {
 					ts = tilesets.get(q);
@@ -139,7 +170,6 @@ public class TiledLoader {
 				for(int x = 0; x < tilelayers.get(i).getWidth(); x++) {
 					int number = data.get(lastPosition).intValue();
 					
-
 					g2.drawImage(tilesetTiles.get(number),x *  ts.getTileWidth(),y * ts.getTileHeight(), ts.getTileWidth(), ts.getTileHeight(), null);
 					lastPosition++;
 				}
