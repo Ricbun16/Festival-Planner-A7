@@ -29,7 +29,7 @@ public class TiledMap extends JPanel implements ActionListener {
 	AffineTransform cameraTransform;
 	int oldX, oldY;
 	int newX, newY;
-	int aantalVisitors = 100;
+	int aantalVisitors;
 	private Point mousePoint;
 	private ArrayList<Visitor> visitors;
 	private Schedule schedule;
@@ -48,7 +48,8 @@ public class TiledMap extends JPanel implements ActionListener {
 	private int tijdState = 0;
 	private ArrayList<TimeSlotMem> memSlotList;
 
-	public TiledMap(Schedule schedule) {
+	public TiledMap(Schedule schedule, int aantalVisitors) {
+		this.aantalVisitors = aantalVisitors;
 		cameraTransform = new AffineTransform();
 		tLoader = new TiledLoader(file);
 		tLoader.createLayers();
@@ -306,6 +307,7 @@ public class TiledMap extends JPanel implements ActionListener {
 		littleFrame.setContentPane(content);
 		littleFrame.setResizable(false);
 		littleFrame.setVisible(true);
+		littleFrame.setLocationRelativeTo(null);
 
 		terug = new JButton("<");
 		vooruit = new JButton(">");
